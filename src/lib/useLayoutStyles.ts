@@ -19,6 +19,9 @@ export const useLayoutStyles = makeStyles((theme: Theme) =>
         marginLeft: drawerWidth,
       },
     },
+    appBarTitle: {
+      flexGrow: 1,
+    },
     menuButton: {
       marginRight: theme.spacing(2),
       [theme.breakpoints.up('sm')]: {

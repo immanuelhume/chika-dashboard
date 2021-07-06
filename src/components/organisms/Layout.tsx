@@ -1,7 +1,7 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
 import React from 'react';
 import { useLayoutStyles } from '../../lib/useLayoutStyles';
 import { Appbar } from '../molecules/Appbar';
+import { GuildMenu } from '../molecules/GuildMenu';
 import { MenuLinks } from '../molecules/MenuLinks';
 import { SideMenu } from '../molecules/SideMenu';
 
@@ -12,9 +12,11 @@ export const Layout: React.FC<ILayout> = ({ children }) => {
 
   return (
     <div className={classes.root}>
-      <CssBaseline />
       <Appbar />
-      <SideMenu Contents={MenuLinks} />
+      <SideMenu>
+        <GuildMenu />
+        <MenuLinks />
+      </SideMenu>
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {children}

@@ -3,24 +3,38 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import AnnouncementTwoToneIcon from '@material-ui/icons/AnnouncementTwoTone';
+import BubbleChartIcon from '@material-ui/icons/BubbleChart';
 import React from 'react';
-import { useLayoutStyles } from '../../lib/useLayoutStyles';
 
-export const MenuLinks: React.FC = () => {
-  const classes = useLayoutStyles();
+interface MenuLink {
+  primary: string;
+  href: string;
+  Icon: React.FC;
+}
 
+const links: MenuLink[] = [
+  {
+    primary: 'Commands',
+    href: '/commands',
+    Icon: BubbleChartIcon,
+  },
+];
+
+interface IMenuLinks {}
+
+export const MenuLinks: React.FC<IMenuLinks> = () => {
   return (
     <div>
-      <div className={classes.toolbar} />
       <Divider />
       <List>
-        <ListItem button>
-          <ListItemIcon>
-            <AnnouncementTwoToneIcon />
-          </ListItemIcon>
-          <ListItemText primary="Commands" />
-        </ListItem>
+        {links.map(({ primary, Icon }) => (
+          <ListItem button key={primary}>
+            <ListItemIcon>
+              <Icon />
+            </ListItemIcon>
+            <ListItemText primary={primary} />
+          </ListItem>
+        ))}
       </List>
     </div>
   );

@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
 import React from 'react';
-import { guildIdSelector, useStore } from '../../controllers/store';
+import { activeGuildSelector, useStore } from '../../controllers/store';
 import {
   CommandCategory,
   SimpleCommandFragment,
@@ -44,10 +44,17 @@ const CommandGroup: React.FC<ICommandGroup> = ({ group, commands }) => {
 };
 
 export const Commands: React.FC = () => {
-  const guildId = useStore(guildIdSelector);
-  const { data, loading } = useCommandsQuery({ variables: { guildId } });
-  if (!data || loading) {
+  const { activeGuild } = useStore(activeGuildSelector);
+  // TODO: fix this later
+  const { data, loading } = useCommandsQuery({
+    variables: { guildId: activeGuild?.id || '' },
+  });
+  if (loading) {
     // TODO: add loading spinner
+    return null;
+  }
+  // TODO: handle erro
+  if (!data) {
     return null;
   }
   const categorized = splitCommands(data.getCommandsUnderGuildCtx);

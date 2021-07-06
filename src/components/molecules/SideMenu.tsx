@@ -5,11 +5,9 @@ import React from 'react';
 import { layoutSelector, useStore } from '../../controllers/store';
 import { useLayoutStyles } from '../../lib/useLayoutStyles';
 
-interface ISideMenu {
-  Contents: React.FC<any>;
-}
+interface ISideMenu {}
 
-export const SideMenu: React.FC<ISideMenu> = ({ Contents }) => {
+export const SideMenu: React.FC<ISideMenu> = ({ children }) => {
   const classes = useLayoutStyles();
   const theme = useTheme();
   const { mobileOpen, toggleMobileOpen } = useStore(layoutSelector);
@@ -30,7 +28,8 @@ export const SideMenu: React.FC<ISideMenu> = ({ Contents }) => {
             keepMounted: true, // Better open performance on mobile.
           }}
         >
-          <Contents />
+          <div className={classes.toolbar} />
+          {children}
         </Drawer>
       </Hidden>
       <Hidden xsDown implementation="css">
@@ -41,7 +40,8 @@ export const SideMenu: React.FC<ISideMenu> = ({ Contents }) => {
           variant="permanent"
           open
         >
-          <Contents />
+          <div className={classes.toolbar} />
+          {children}
         </Drawer>
       </Hidden>
     </nav>

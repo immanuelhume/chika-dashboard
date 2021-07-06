@@ -6,6 +6,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import React from 'react';
 import { layoutSelector, useStore } from '../../controllers/store';
 import { useLayoutStyles } from '../../lib/useLayoutStyles';
+import { UserAvatar } from '../atoms/UserAvatar';
 
 interface IAppbar {}
 
@@ -25,9 +26,10 @@ export const Appbar: React.FC<IAppbar> = () => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" noWrap>
-          Guild name
+        <Typography variant="h6" noWrap className={classes.appBarTitle}>
+          chika.ts
         </Typography>
+        <UserAvatar />
       </Toolbar>
     </AppBar>
   );
