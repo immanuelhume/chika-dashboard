@@ -1,0 +1,7 @@
+fragment SimpleCommand on CommandGuildCtx {
+  id
+  name
+  description
+  category
+  disabled
+}

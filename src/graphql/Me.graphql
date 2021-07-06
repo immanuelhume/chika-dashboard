@@ -1,0 +1,12 @@
+query Me {
+  getUser {
+    id
+    username
+    avatar
+    guilds {
+      id
+      name
+      icon
+    }
+  }
+}

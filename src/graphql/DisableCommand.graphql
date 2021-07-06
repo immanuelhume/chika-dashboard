@@ -1,0 +1,5 @@
+mutation DisabledCommand($input: ToggleCommandInput!) {
+  disableCommand(toggleCommandInput: $input) {
+    ...SimpleCommand
+  }
+}

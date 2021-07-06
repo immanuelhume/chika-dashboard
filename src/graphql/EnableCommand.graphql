@@ -1,0 +1,5 @@
+mutation EnableCommand($input: ToggleCommandInput!) {
+  enableCommand(toggleCommandInput: $input) {
+    ...SimpleCommand
+  }
+}

@@ -1,0 +1,5 @@
+query Commands($guildId: String!) {
+  getCommandsUnderGuildCtx(guildId: $guildId) {
+    ...SimpleCommand
+  }
+}
