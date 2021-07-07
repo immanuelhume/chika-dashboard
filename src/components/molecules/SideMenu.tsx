@@ -1,8 +1,8 @@
 import { useTheme } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
-import React from 'react';
-import { layoutSelector, useStore } from '../../controllers/store';
+import React, { useCallback } from 'react';
+import { useStore } from '../../controllers/store';
 import { useLayoutStyles } from '../../lib/useLayoutStyles';
 
 interface ISideMenu {}
@@ -10,7 +10,13 @@ interface ISideMenu {}
 export const SideMenu: React.FC<ISideMenu> = ({ children }) => {
   const classes = useLayoutStyles();
   const theme = useTheme();
-  const { mobileOpen, toggleMobileOpen } = useStore(layoutSelector);
+  const { mobileOpen, toggleMobileOpen } = useStore(
+    useCallback(
+      // eslint-disable-next-line no-shadow
+      ({ mobileOpen, toggleMobileOpen }) => ({ mobileOpen, toggleMobileOpen }),
+      [],
+    ),
+  );
 
   return (
     <nav className={classes.drawer} aria-label="mailbox folders">

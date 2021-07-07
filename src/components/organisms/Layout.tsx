@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useStore } from '../../controllers/store';
 import { useLayoutStyles } from '../../lib/useLayoutStyles';
 import { Appbar } from '../molecules/Appbar';
 import { GuildMenu } from '../molecules/GuildMenu';
@@ -9,13 +10,20 @@ interface ILayout {}
 
 export const Layout: React.FC<ILayout> = ({ children }) => {
   const classes = useLayoutStyles();
+  const activeGuild = useStore(useCallback((state) => state.activeGuild, []));
 
   return (
     <div className={classes.root}>
       <Appbar />
       <SideMenu>
-        <GuildMenu />
-        <MenuLinks />
+        {activeGuild ? (
+          <>
+            <GuildMenu />
+            <MenuLinks />
+          </>
+        ) : (
+          <div>no guild </div>
+        )}
       </SideMenu>
       <main className={classes.content}>
         <div className={classes.toolbar} />

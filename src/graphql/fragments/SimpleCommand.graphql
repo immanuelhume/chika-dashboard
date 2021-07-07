@@ -1,5 +1,6 @@
 fragment SimpleCommand on CommandGuildCtx {
   id
+  commandId
   name
   description
   category

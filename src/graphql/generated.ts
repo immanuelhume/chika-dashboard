@@ -49,8 +49,10 @@ export type CommandGuildCtx = {
   aliases?: Maybe<Array<Scalars['String']>>;
   args?: Maybe<Array<Argument>>;
   category: CommandCategory;
+  commandId: Scalars['Int'];
   description: Scalars['String'];
   disabled: Scalars['Boolean'];
+  /** This is a prefixed ID of the format {guildID}:{commandID} */
   id: Scalars['ID'];
   name: Scalars['String'];
 };
@@ -66,6 +68,8 @@ export type Mutation = {
   __typename?: 'Mutation';
   disableCommand: CommandGuildCtx;
   enableCommand: CommandGuildCtx;
+  /** Checks our database for this guild. */
+  hasChika: Scalars['Boolean'];
 };
 
 export type MutationDisableCommandArgs = {
@@ -74,6 +78,10 @@ export type MutationDisableCommandArgs = {
 
 export type MutationEnableCommandArgs = {
   toggleCommandInput: ToggleCommandInput;
+};
+
+export type MutationHasChikaArgs = {
+  guildId: Scalars['String'];
 };
 
 export type Query = {
@@ -88,7 +96,7 @@ export type QueryGetCommandsUnderGuildCtxArgs = {
 };
 
 export type ToggleCommandInput = {
-  commandId: Scalars['ID'];
+  commandId: Scalars['Int'];
   guildId: Scalars['String'];
 };
 
@@ -100,15 +108,10 @@ export type User = {
   username: Scalars['String'];
 };
 
-export type CommandsQueryVariables = Exact<{
-  guildId: Scalars['String'];
-}>;
-
-export type CommandsQuery = { __typename?: 'Query' } & {
-  getCommandsUnderGuildCtx: Array<
-    { __typename?: 'CommandGuildCtx' } & SimpleCommandFragment
-  >;
-};
+export type SimpleCommandFragment = { __typename?: 'CommandGuildCtx' } & Pick<
+  CommandGuildCtx,
+  'id' | 'commandId' | 'name' | 'description' | 'category' | 'disabled'
+>;
 
 export type DisabledCommandMutationVariables = Exact<{
   input: ToggleCommandInput;
@@ -126,6 +129,25 @@ export type EnableCommandMutation = { __typename?: 'Mutation' } & {
   enableCommand: { __typename?: 'CommandGuildCtx' } & SimpleCommandFragment;
 };
 
+export type HasChikaMutationVariables = Exact<{
+  guildId: Scalars['String'];
+}>;
+
+export type HasChikaMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'hasChika'
+>;
+
+export type CommandsQueryVariables = Exact<{
+  guildId: Scalars['String'];
+}>;
+
+export type CommandsQuery = { __typename?: 'Query' } & {
+  getCommandsUnderGuildCtx: Array<
+    { __typename?: 'CommandGuildCtx' } & SimpleCommandFragment
+  >;
+};
+
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
 
 export type MeQuery = { __typename?: 'Query' } & {
@@ -139,74 +161,16 @@ export type MeQuery = { __typename?: 'Query' } & {
     };
 };
 
-export type SimpleCommandFragment = { __typename?: 'CommandGuildCtx' } & Pick<
-  CommandGuildCtx,
-  'id' | 'name' | 'description' | 'category' | 'disabled'
->;
-
 export const SimpleCommandFragmentDoc = gql`
   fragment SimpleCommand on CommandGuildCtx {
     id
+    commandId
     name
     description
     category
     disabled
   }
 `;
-export const CommandsDocument = gql`
-  query Commands($guildId: String!) {
-    getCommandsUnderGuildCtx(guildId: $guildId) {
-      ...SimpleCommand
-    }
-  }
-  ${SimpleCommandFragmentDoc}
-`;
-
-/**
- * __useCommandsQuery__
- *
- * To run a query within a React component, call `useCommandsQuery` and pass it any options that fit your needs.
- * When your component renders, `useCommandsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useCommandsQuery({
- *   variables: {
- *      guildId: // value for 'guildId'
- *   },
- * });
- */
-export function useCommandsQuery(
-  baseOptions: Apollo.QueryHookOptions<CommandsQuery, CommandsQueryVariables>,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useQuery<CommandsQuery, CommandsQueryVariables>(
-    CommandsDocument,
-    options,
-  );
-}
-export function useCommandsLazyQuery(
-  baseOptions?: Apollo.LazyQueryHookOptions<
-    CommandsQuery,
-    CommandsQueryVariables
-  >,
-) {
-  const options = { ...defaultOptions, ...baseOptions };
-  return Apollo.useLazyQuery<CommandsQuery, CommandsQueryVariables>(
-    CommandsDocument,
-    options,
-  );
-}
-export type CommandsQueryHookResult = ReturnType<typeof useCommandsQuery>;
-export type CommandsLazyQueryHookResult = ReturnType<
-  typeof useCommandsLazyQuery
->;
-export type CommandsQueryResult = Apollo.QueryResult<
-  CommandsQuery,
-  CommandsQueryVariables
->;
 export const DisabledCommandDocument = gql`
   mutation DisabledCommand($input: ToggleCommandInput!) {
     disableCommand(toggleCommandInput: $input) {
@@ -308,6 +272,105 @@ export type EnableCommandMutationResult =
 export type EnableCommandMutationOptions = Apollo.BaseMutationOptions<
   EnableCommandMutation,
   EnableCommandMutationVariables
+>;
+export const HasChikaDocument = gql`
+  mutation HasChika($guildId: String!) {
+    hasChika(guildId: $guildId)
+  }
+`;
+export type HasChikaMutationFn = Apollo.MutationFunction<
+  HasChikaMutation,
+  HasChikaMutationVariables
+>;
+
+/**
+ * __useHasChikaMutation__
+ *
+ * To run a mutation, you first call `useHasChikaMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useHasChikaMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [hasChikaMutation, { data, loading, error }] = useHasChikaMutation({
+ *   variables: {
+ *      guildId: // value for 'guildId'
+ *   },
+ * });
+ */
+export function useHasChikaMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    HasChikaMutation,
+    HasChikaMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<HasChikaMutation, HasChikaMutationVariables>(
+    HasChikaDocument,
+    options,
+  );
+}
+export type HasChikaMutationHookResult = ReturnType<typeof useHasChikaMutation>;
+export type HasChikaMutationResult = Apollo.MutationResult<HasChikaMutation>;
+export type HasChikaMutationOptions = Apollo.BaseMutationOptions<
+  HasChikaMutation,
+  HasChikaMutationVariables
+>;
+export const CommandsDocument = gql`
+  query Commands($guildId: String!) {
+    getCommandsUnderGuildCtx(guildId: $guildId) {
+      ...SimpleCommand
+    }
+  }
+  ${SimpleCommandFragmentDoc}
+`;
+
+/**
+ * __useCommandsQuery__
+ *
+ * To run a query within a React component, call `useCommandsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCommandsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCommandsQuery({
+ *   variables: {
+ *      guildId: // value for 'guildId'
+ *   },
+ * });
+ */
+export function useCommandsQuery(
+  baseOptions: Apollo.QueryHookOptions<CommandsQuery, CommandsQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<CommandsQuery, CommandsQueryVariables>(
+    CommandsDocument,
+    options,
+  );
+}
+export function useCommandsLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    CommandsQuery,
+    CommandsQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<CommandsQuery, CommandsQueryVariables>(
+    CommandsDocument,
+    options,
+  );
+}
+export type CommandsQueryHookResult = ReturnType<typeof useCommandsQuery>;
+export type CommandsLazyQueryHookResult = ReturnType<
+  typeof useCommandsLazyQuery
+>;
+export type CommandsQueryResult = Apollo.QueryResult<
+  CommandsQuery,
+  CommandsQueryVariables
 >;
 export const MeDocument = gql`
   query Me {

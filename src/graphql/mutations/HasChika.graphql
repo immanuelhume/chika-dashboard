@@ -1,0 +1,3 @@
+mutation HasChika($guildId: String!) {
+  hasChika(guildId: $guildId)
+}

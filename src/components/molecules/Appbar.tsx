@@ -3,8 +3,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import MenuIcon from '@material-ui/icons/Menu';
-import React from 'react';
-import { layoutSelector, useStore } from '../../controllers/store';
+import React, { useCallback } from 'react';
+import { useStore } from '../../controllers/store';
 import { useLayoutStyles } from '../../lib/useLayoutStyles';
 import { UserAvatar } from '../atoms/UserAvatar';
 
@@ -12,7 +12,9 @@ interface IAppbar {}
 
 export const Appbar: React.FC<IAppbar> = () => {
   const classes = useLayoutStyles();
-  const { toggleMobileOpen } = useStore(layoutSelector);
+  const toggleMobileOpen = useStore(
+    useCallback((state) => state.toggleMobileOpen, []),
+  );
 
   return (
     <AppBar position="fixed" className={classes.appBar}>

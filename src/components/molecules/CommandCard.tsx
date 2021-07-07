@@ -9,15 +9,15 @@ import { CommandToggle } from '../atoms/CommandToggle';
 interface ICommandCard extends SimpleCommandFragment {}
 
 export const CommandCard: React.FC<ICommandCard> = ({
-  id,
   name,
   description,
   disabled,
+  commandId,
 }) => (
   <Card>
     <CardHeader
       title={name}
-      action={<CommandToggle id={id} disabled={disabled} />}
+      action={<CommandToggle commandId={commandId} disabled={disabled} />}
     />
     <CardContent>
       <Typography color="textSecondary">{description}</Typography>

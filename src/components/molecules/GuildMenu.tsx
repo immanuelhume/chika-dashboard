@@ -1,22 +1,27 @@
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import React, { useState } from 'react';
-import {
-  activeGuildSelector,
-  userGetterSelector,
-  useStore,
-} from '../../controllers/store';
+import React, { useCallback, useState } from 'react';
+import { useStore } from '../../controllers/store';
 import { Guild } from '../../graphql/generated';
 import { guildIcon } from '../../lib/discord';
 
 export const GuildMenu: React.FC = () => {
-  const { activeGuild, setActiveGuild } = useStore(activeGuildSelector);
-  const { guilds } = useStore(userGetterSelector);
+  const { guilds, activeGuild, setActiveGuild } = useStore(
+    useCallback(
+      // eslint-disable-next-line no-shadow
+      ({ guilds, activeGuild, setActiveGuild }) => ({
+        guilds,
+        activeGuild,
+        setActiveGuild,
+      }),
+      [],
+    ),
+  );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   function handleClickItem(event: React.MouseEvent<HTMLElement>) {

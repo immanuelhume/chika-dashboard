@@ -1,6 +1,6 @@
 import Switch from '@material-ui/core/Switch';
-import React from 'react';
-import { activeGuildSelector, useStore } from '../../controllers/store';
+import React, { useCallback } from 'react';
+import { useStore } from '../../controllers/store';
 import {
   SimpleCommandFragment,
   ToggleCommandInput,
@@ -8,16 +8,19 @@ import {
   useEnableCommandMutation,
 } from '../../graphql/generated';
 
-type ICommandToggle = Pick<SimpleCommandFragment, 'id' | 'disabled'>;
+type ICommandToggle = Pick<SimpleCommandFragment, 'commandId' | 'disabled'>;
 
-export const CommandToggle: React.FC<ICommandToggle> = ({ disabled, id }) => {
-  const { activeGuild } = useStore(activeGuildSelector);
+export const CommandToggle: React.FC<ICommandToggle> = ({
+  disabled,
+  commandId,
+}) => {
+  const activeGuild = useStore(useCallback((state) => state.activeGuild, []));
   const [disable] = useDisabledCommandMutation();
   const [enable] = useEnableCommandMutation();
 
   if (!activeGuild) return null;
   const variables: { input: ToggleCommandInput } = {
-    input: { commandId: id, guildId: activeGuild?.id },
+    input: { commandId, guildId: activeGuild.id },
   };
 
   const handleToggle: React.ComponentProps<typeof Switch>['onChange'] = (
