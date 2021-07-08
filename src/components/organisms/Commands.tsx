@@ -34,7 +34,7 @@ const CommandGroup: React.FC<ICommandGroup> = ({ group, commands }) => {
 
       <Grid container spacing={3}>
         {commands.map((command) => (
-          <Grid item xs={12} sm={6} md={4} key={command.id}>
+          <Grid item sm={12} md={6} lg={4} key={command.id}>
             <CommandCard {...command} />
           </Grid>
         ))}
@@ -49,7 +49,6 @@ interface ICommands {
 }
 
 export const Commands: React.FC<ICommands> = ({ activeGuild }) => {
-  console.log(activeGuild);
   const { data, loading } = useCommandsQuery({
     variables: { guildId: activeGuild.id },
   });
@@ -61,7 +60,6 @@ export const Commands: React.FC<ICommands> = ({ activeGuild }) => {
   if (!data) {
     return null;
   }
-  console.log(data);
   const categorized = splitCommands(data.getCommandsUnderGuildCtx);
   return (
     <>

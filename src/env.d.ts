@@ -3,5 +3,6 @@ declare namespace NodeJS {
     NODE_ENV: string;
     NEXT_PUBLIC_API_URI: string;
     NEXT_PUBLIC_INVITE_URL: string;
+    NEXT_PUBLIC_LOGIN_URL: string;
   }
 }

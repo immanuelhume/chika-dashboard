@@ -51,21 +51,23 @@ export const GuildMenu: React.FC = () => {
         open={!!anchorEl}
         onClose={handleClose}
       >
-        {guilds.map((guild) => {
-          const { id, name, icon } = guild;
-          return (
-            <MenuItem
-              key={id}
-              selected={activeGuild?.id === id}
-              onClick={() => handleMenuItemClick(guild)}
-            >
-              <ListItemAvatar>
-                <Avatar src={guildIcon(id, icon)} />
-              </ListItemAvatar>
-              {name}
-            </MenuItem>
-          );
-        })}
+        {guilds
+          .filter((guild) => guild.isChikaIn)
+          .map((guild) => {
+            const { id, name, icon } = guild;
+            return (
+              <MenuItem
+                key={id}
+                selected={activeGuild?.id === id}
+                onClick={() => handleMenuItemClick(guild)}
+              >
+                <ListItemAvatar>
+                  <Avatar src={guildIcon(id, icon)} />
+                </ListItemAvatar>
+                {name}
+              </MenuItem>
+            );
+          })}
       </Menu>
     </>
   );

@@ -1,4 +1,5 @@
-import { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { AuthModal } from '../components/molecules/LoginModal';
 import { GuildBars } from '../components/organisms/GuildBars';
 import { Layout } from '../components/organisms/Layout';
 import { useStore } from '../controllers/store';
@@ -28,12 +29,11 @@ export default function Home() {
   // TODO: loading spinner
   if (loading) return null;
   // TODO: handle error
-  if (error) return null;
-  if (!data) return null;
 
   return (
     <Layout>
       <GuildBars />
+      <AuthModal open={!!error} />
     </Layout>
   );
 }
