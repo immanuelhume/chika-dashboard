@@ -5,6 +5,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import BubbleChartIcon from '@material-ui/icons/BubbleChart';
 import HomeIcon from '@material-ui/icons/Home';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 
@@ -24,6 +25,11 @@ const links: MenuLink[] = [
     primary: 'Commands',
     href: '/commands',
     Icon: BubbleChartIcon,
+  },
+  {
+    primary: 'Settings',
+    href: '/settings',
+    Icon: SettingsIcon,
   },
 ];
 

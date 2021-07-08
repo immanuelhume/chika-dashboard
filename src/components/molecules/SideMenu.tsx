@@ -1,6 +1,7 @@
 import { useTheme } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
+import NoSsr from '@material-ui/core/NoSsr';
 import React, { useCallback } from 'react';
 import { useStore } from '../../controllers/store';
 import { useLayoutStyles } from '../../lib/useLayoutStyles';
@@ -35,7 +36,7 @@ export const SideMenu: React.FC<ISideMenu> = ({ children }) => {
           }}
         >
           <div className={classes.toolbar} />
-          {children}
+          <NoSsr>{children}</NoSsr>
         </Drawer>
       </Hidden>
       <Hidden xsDown implementation="css">
@@ -47,7 +48,7 @@ export const SideMenu: React.FC<ISideMenu> = ({ children }) => {
           open
         >
           <div className={classes.toolbar} />
-          {children}
+          <NoSsr>{children}</NoSsr>
         </Drawer>
       </Hidden>
     </nav>

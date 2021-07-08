@@ -34,7 +34,7 @@ export const UserAvatar: React.FC = () => {
         <NoSsr>
           <Avatar src={avatar(user?.id, user?.avatar)} />
         </NoSsr>
-        <ExpandMoreIcon className={classes.expand} />
+        <ExpandMoreIcon />
       </ButtonBase>
       <AvatarMenu anchorEl={anchorEl} handleClose={handleClose} />
     </>
