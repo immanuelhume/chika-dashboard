@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useStore } from '../../controllers/store';
 import { useLayoutStyles } from '../../lib/useLayoutStyles';
+import { NoGuildSideMenu } from '../atoms/NoGuildSideMenu';
 import { Appbar } from '../molecules/Appbar';
 import { GuildMenu } from '../molecules/GuildMenu';
 import { MenuLinks } from '../molecules/MenuLinks';
@@ -22,7 +23,7 @@ export const Layout: React.FC<ILayout> = ({ children }) => {
             <MenuLinks />
           </>
         ) : (
-          <div>no guild </div>
+          <NoGuildSideMenu />
         )}
       </SideMenu>
       <main className={classes.content}>

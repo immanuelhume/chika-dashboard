@@ -1,4 +1,3 @@
-import { makeStyles, Theme } from '@material-ui/core';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -15,12 +14,7 @@ import {
 } from '../../graphql/generated';
 import { splitCommands } from '../../lib/splitCommands';
 import { CommandCard } from '../molecules/CommandCard';
-
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    marginBottom: theme.spacing(4),
-  },
-}));
+import { LoadingScreen } from './LoadingScreen';
 
 interface ICommandGroup {
   group: string;
@@ -28,7 +22,6 @@ interface ICommandGroup {
 }
 
 const CommandGroup: React.FC<ICommandGroup> = ({ group, commands }) => {
-  const classes = useStyles();
   return (
     <Accordion TransitionProps={{ unmountOnExit: true }} defaultExpanded>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
@@ -57,8 +50,7 @@ export const Commands: React.FC<ICommands> = ({ activeGuild }) => {
     variables: { guildId: activeGuild.id },
   });
   if (loading) {
-    // TODO: add loading spinner
-    return null;
+    return <LoadingScreen />;
   }
   if (!data) {
     return null;

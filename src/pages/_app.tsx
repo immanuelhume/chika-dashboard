@@ -6,10 +6,7 @@ import client from '../apollo-client';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <SnackbarProvider
-      preventDuplicate
-      anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
-    >
+    <SnackbarProvider preventDuplicate>
       <ApolloProvider client={client}>
         <CssBaseline />
         <Component {...pageProps} />

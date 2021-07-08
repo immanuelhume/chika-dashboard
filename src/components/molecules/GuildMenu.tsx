@@ -2,9 +2,12 @@ import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import SwapVertIcon from '@material-ui/icons/SwapVert';
+import { useSnackbar } from 'notistack';
 import React, { useCallback, useState } from 'react';
 import { useStore } from '../../controllers/store';
 import { Guild } from '../../graphql/generated';
@@ -23,6 +26,7 @@ export const GuildMenu: React.FC = () => {
     ),
   );
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const { enqueueSnackbar } = useSnackbar();
 
   function handleClickItem(event: React.MouseEvent<HTMLElement>) {
     setAnchorEl(event.currentTarget);
@@ -33,6 +37,9 @@ export const GuildMenu: React.FC = () => {
   function handleMenuItemClick(guild: Guild) {
     setActiveGuild(guild);
     setAnchorEl(null);
+    enqueueSnackbar(`Switched to ${guild.name}`, {
+      variant: 'info',
+    });
   }
 
   return (
@@ -43,6 +50,9 @@ export const GuildMenu: React.FC = () => {
             <Avatar src={guildIcon(activeGuild?.id, activeGuild?.icon)} />
           </ListItemAvatar>
           <ListItemText primary={activeGuild?.name || 'Choose a server'} />
+          <ListItemIcon>
+            <SwapVertIcon />
+          </ListItemIcon>
         </ListItem>
       </List>
       <Menu

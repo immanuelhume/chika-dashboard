@@ -1,9 +1,21 @@
+import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 import React, { useCallback, useEffect } from 'react';
 import { LoginPrompt } from '../components/molecules/LoginPrompt';
 import { GuildBars } from '../components/organisms/GuildBars';
 import { Layout } from '../components/organisms/Layout';
+import { LoadingScreen } from '../components/organisms/LoadingScreen';
 import { useStore } from '../controllers/store';
 import { useMeQuery } from '../graphql/generated';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      flexGrow: 1,
+    },
+  }),
+);
 
 export default function Home() {
   const { data, loading, error } = useMeQuery();
@@ -25,14 +37,21 @@ export default function Home() {
     setUser(data?.getUser);
     setGuilds(data?.getUser.guilds || []);
   }, [data, setUser, setGuilds]);
+  const classes = useStyles();
 
-  // TODO: loading spinner
-  if (loading) return null;
+  if (loading) {
+    return <LoadingScreen />;
+  }
   // FIXME: handle case when there are no guilds
 
   return (
     <Layout>
-      <GuildBars />
+      <Container maxWidth="sm" className={classes.root}>
+        <Typography variant="body1" color="textSecondary" gutterBottom>
+          {`👋 ${data?.getUser.username}, which server are we configuring today?`}
+        </Typography>
+        <GuildBars />
+      </Container>
       <LoginPrompt open={!!error} />
     </Layout>
   );
