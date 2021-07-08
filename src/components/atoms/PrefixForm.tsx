@@ -28,7 +28,7 @@ export const PrefixForm: React.FC<IPrefixForm> = ({
     initialValues: { prefix: initialPrefix },
     validationSchema,
     // eslint-disable-next-line no-shadow
-    onSubmit: async ({ prefix }) => {
+    onSubmit: async ({ prefix }, { setSubmitting }) => {
       if (prefix === initialPrefix) return;
       await updatePrefix({
         variables: { input: { id: guildId, prefix } },
@@ -39,6 +39,7 @@ export const PrefixForm: React.FC<IPrefixForm> = ({
         </div>,
         { variant: 'success' },
       );
+      setSubmitting(false);
     },
   });
 
@@ -57,8 +58,7 @@ export const PrefixForm: React.FC<IPrefixForm> = ({
             />
           )}
         </Field>
-        {/* TODO: loading indicator for this button */}
-        <SaveButton />
+        <SaveButton loading={formik.isSubmitting} />
       </Form>
     </FormikProvider>
   );

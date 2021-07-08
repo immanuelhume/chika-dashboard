@@ -42,7 +42,7 @@ export default function Home() {
   if (loading) {
     return <LoadingScreen />;
   }
-  // FIXME: handle case when there are no guilds
+  // TODO: handle case when there are no guilds
 
   return (
     <Layout>

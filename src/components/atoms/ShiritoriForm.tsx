@@ -1,6 +1,7 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import TextField from '@material-ui/core/TextField';
 import { Field, FieldProps, Form, FormikProvider, useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
 import React from 'react';
 import * as yup from 'yup';
 import { GuildConfig } from '../../graphql/generated';
@@ -32,6 +33,7 @@ const validationSchema = yup.object({
 
 export const ShiritoriForm: React.FC<IShiritoriForm> = ({ config }) => {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   const { shiriHandSize, shiriMinLen, id } = config;
   const formik = useFormik({
     initialValues: {
@@ -39,7 +41,12 @@ export const ShiritoriForm: React.FC<IShiritoriForm> = ({ config }) => {
       minLen: shiriMinLen,
     },
     validationSchema,
-    onSubmit: (values) => alert(JSON.stringify(values, null, 2)),
+    onSubmit: (values, { setSubmitting }) => {
+      // TODO: set up resolvers for these
+      alert(JSON.stringify(values, null, 2));
+      enqueueSnackbar('Shiritori settings updated', { variant: 'success' });
+      setSubmitting(false);
+    },
   });
 
   return (
@@ -73,7 +80,7 @@ export const ShiritoriForm: React.FC<IShiritoriForm> = ({ config }) => {
             />
           )}
         </Field>
-        <SaveButton />
+        <SaveButton loading={formik.isSubmitting} />
       </Form>
     </FormikProvider>
   );
