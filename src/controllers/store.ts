@@ -1,5 +1,5 @@
 import create from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import { Guild, User } from '../graphql/generated';
 
 export interface IStoreFields {
@@ -19,18 +19,23 @@ export interface IStoreFields {
 }
 
 export const useStore = create<IStoreFields>(
-  devtools((set) => ({
-    // User info
-    setUser: (user?: User) => set({ user }),
-    guilds: [],
-    setGuilds: (guilds: Guild[]) => set({ guilds }),
+  devtools(
+    persist(
+      (set) => ({
+        // User info
+        setUser: (user?: User) => set({ user }),
+        guilds: [],
+        setGuilds: (guilds: Guild[]) => set({ guilds }),
 
-    // Active guild
-    setActiveGuild: (guild: Guild) => set({ activeGuild: guild }),
+        // Active guild
+        setActiveGuild: (guild: Guild) => set({ activeGuild: guild }),
 
-    // Layout
-    mobileOpen: false,
-    toggleMobileOpen: () =>
-      set(({ mobileOpen }) => set({ mobileOpen: !mobileOpen })),
-  })),
+        // Layout
+        mobileOpen: false,
+        toggleMobileOpen: () =>
+          set(({ mobileOpen }) => set({ mobileOpen: !mobileOpen })),
+      }),
+      { name: 'zustand-store', whitelist: ['user', 'guilds', 'activeGuild'] },
+    ),
+  ),
 );
