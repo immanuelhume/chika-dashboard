@@ -1,6 +1,7 @@
 import React from 'react';
 import { Guild, useGuildConfigQuery } from '../../graphql/generated';
 import { PrefixSettingsCard } from '../molecules/PrefixSettingsCard';
+import { ShiritoriSettingsCard } from '../molecules/ShiritoriSettingsCard';
 import { LoadingScreen } from './LoadingScreen';
 
 interface ISettingsCards {
@@ -24,6 +25,7 @@ export const SettingsCards: React.FC<ISettingsCards> = ({ activeGuild }) => {
         guildId={activeGuild.id}
         prefix={data.getGuildConfig.prefix}
       />
+      <ShiritoriSettingsCard config={data.getGuildConfig} />
     </>
   );
 };

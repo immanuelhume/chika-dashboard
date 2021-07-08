@@ -17,14 +17,8 @@ export const Layout: React.FC<ILayout> = ({ children }) => {
     <div className={classes.root}>
       <Appbar />
       <SideMenu>
-        {activeGuild ? (
-          <>
-            <GuildMenu />
-            <MenuLinks />
-          </>
-        ) : (
-          <NoGuildSideMenu />
-        )}
+        <GuildMenu />
+        {activeGuild ? <MenuLinks /> : <NoGuildSideMenu />}
       </SideMenu>
       <main className={classes.content}>
         <div className={classes.toolbar} />

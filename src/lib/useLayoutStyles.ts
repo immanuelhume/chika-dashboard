@@ -35,7 +35,17 @@ export const useLayoutStyles = makeStyles((theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      padding: theme.spacing(4),
+      [theme.breakpoints.up('xs')]: {
+        padding: theme.spacing(4),
+        paddingLeft: theme.spacing(1),
+        paddingRight: theme.spacing(1),
+      },
+      [theme.breakpoints.up('sm')]: {
+        padding: theme.spacing(3),
+      },
+      [theme.breakpoints.up('md')]: {
+        padding: theme.spacing(4),
+      },
     },
   }),
 );

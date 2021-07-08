@@ -1,7 +1,7 @@
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
+import CardHeader from '@material-ui/core/CardHeader';
 import React from 'react';
+import { CardGutterBottom } from '../atoms/CardGutterBottom';
 import { PrefixForm } from '../atoms/PrefixForm';
 
 interface IPrefixSettingsCard {
@@ -14,7 +14,7 @@ export const PrefixSettingsCard: React.FC<IPrefixSettingsCard> = ({
   prefix,
 }) => {
   return (
-    <Card>
+    <CardGutterBottom>
       <CardHeader
         title="Bot prefix"
         subheader="These characters will trigger Chika."
@@ -22,6 +22,6 @@ export const PrefixSettingsCard: React.FC<IPrefixSettingsCard> = ({
       <CardContent>
         <PrefixForm guildId={guildId} prefix={prefix} />
       </CardContent>
-    </Card>
+    </CardGutterBottom>
   );
 };

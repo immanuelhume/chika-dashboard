@@ -1,3 +1,6 @@
 mutation UpdatePrefix($input: UpdatePrefixInput!) {
-  updatePrefix(input: $input)
+  updatePrefix(input: $input) {
+    id
+    prefix
+  }
 }

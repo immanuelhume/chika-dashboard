@@ -1,11 +1,10 @@
-import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import PublishRoundedIcon from '@material-ui/icons/PublishRounded';
-import { useFormik, FormikProvider, Form, Field, FieldProps } from 'formik';
+import { Field, FieldProps, Form, FormikProvider, useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import * as yup from 'yup';
 import { useUpdatePrefixMutation } from '../../graphql/generated';
+import { SaveButton } from './SaveButton';
 
 const validationSchema = yup.object({
   prefix: yup
@@ -32,7 +31,7 @@ export const PrefixForm: React.FC<IPrefixForm> = ({
     onSubmit: async ({ prefix }) => {
       if (prefix === initialPrefix) return;
       await updatePrefix({
-        variables: { input: { guildId, prefix } },
+        variables: { input: { id: guildId, prefix } },
       });
       enqueueSnackbar(
         <div>
@@ -50,7 +49,7 @@ export const PrefixForm: React.FC<IPrefixForm> = ({
           {({ field, meta }: FieldProps) => (
             <TextField
               id="prefix"
-              label="Anything you like"
+              label="Anything you fancy"
               variant="filled"
               error={meta.touched && !!meta.error}
               helperText={meta.error}
@@ -59,9 +58,7 @@ export const PrefixForm: React.FC<IPrefixForm> = ({
           )}
         </Field>
         {/* TODO: loading indicator for this button */}
-        <IconButton aria-label="submit da form" type="submit">
-          <PublishRoundedIcon />
-        </IconButton>
+        <SaveButton />
       </Form>
     </FormikProvider>
   );

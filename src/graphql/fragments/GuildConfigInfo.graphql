@@ -1,0 +1,8 @@
+fragment GuildConfigInfo on GuildConfig {
+  id
+  prefix
+  shiriMinLen
+  shiriHandSize
+  ballMinVol
+  ballMaxVol
+}

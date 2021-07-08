@@ -1,10 +1,5 @@
 query GuildConfig($guildId: ID!) {
   getGuildConfig(guildId: $guildId) {
-    id
-    prefix
-    shiriMinLen
-    shiriHandSize
-    ballMinVol
-    ballMaxVol
+    ...GuildConfigInfo
   }
 }

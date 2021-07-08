@@ -37,9 +37,14 @@ export const GuildMenu: React.FC = () => {
   function handleMenuItemClick(guild: Guild) {
     setActiveGuild(guild);
     setAnchorEl(null);
-    enqueueSnackbar(`Switched to ${guild.name}`, {
-      variant: 'info',
-    });
+    enqueueSnackbar(
+      <div>
+        Switched to <b>{guild.name}</b>
+      </div>,
+      {
+        variant: 'info',
+      },
+    );
   }
 
   return (

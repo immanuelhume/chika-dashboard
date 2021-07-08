@@ -87,7 +87,7 @@ export type Mutation = {
   /** Returns true if logout was successful. */
   logout: Scalars['Boolean'];
   /** The new prefix */
-  updatePrefix: Scalars['String'];
+  updatePrefix: GuildConfig;
 };
 
 export type MutationDisableCommandArgs = {
@@ -128,7 +128,7 @@ export type ToggleCommandInput = {
 };
 
 export type UpdatePrefixInput = {
-  guildId: Scalars['ID'];
+  id: Scalars['ID'];
   prefix: Scalars['String'];
 };
 
@@ -139,6 +139,16 @@ export type User = {
   id: Scalars['ID'];
   username: Scalars['String'];
 };
+
+export type GuildConfigInfoFragment = { __typename?: 'GuildConfig' } & Pick<
+  GuildConfig,
+  | 'id'
+  | 'prefix'
+  | 'shiriMinLen'
+  | 'shiriHandSize'
+  | 'ballMinVol'
+  | 'ballMaxVol'
+>;
 
 export type SimpleCommandFragment = { __typename?: 'CommandGuildCtx' } & Pick<
   CommandGuildCtx,
@@ -181,10 +191,12 @@ export type UpdatePrefixMutationVariables = Exact<{
   input: UpdatePrefixInput;
 }>;
 
-export type UpdatePrefixMutation = { __typename?: 'Mutation' } & Pick<
-  Mutation,
-  'updatePrefix'
->;
+export type UpdatePrefixMutation = { __typename?: 'Mutation' } & {
+  updatePrefix: { __typename?: 'GuildConfig' } & Pick<
+    GuildConfig,
+    'id' | 'prefix'
+  >;
+};
 
 export type CommandsQueryVariables = Exact<{
   guildId: Scalars['String'];
@@ -201,15 +213,7 @@ export type GuildConfigQueryVariables = Exact<{
 }>;
 
 export type GuildConfigQuery = { __typename?: 'Query' } & {
-  getGuildConfig: { __typename?: 'GuildConfig' } & Pick<
-    GuildConfig,
-    | 'id'
-    | 'prefix'
-    | 'shiriMinLen'
-    | 'shiriHandSize'
-    | 'ballMinVol'
-    | 'ballMaxVol'
-  >;
+  getGuildConfig: { __typename?: 'GuildConfig' } & GuildConfigInfoFragment;
 };
 
 export type MeQueryVariables = Exact<{ [key: string]: never }>;
@@ -228,6 +232,16 @@ export type MeQuery = { __typename?: 'Query' } & {
     };
 };
 
+export const GuildConfigInfoFragmentDoc = gql`
+  fragment GuildConfigInfo on GuildConfig {
+    id
+    prefix
+    shiriMinLen
+    shiriHandSize
+    ballMinVol
+    ballMaxVol
+  }
+`;
 export const SimpleCommandFragmentDoc = gql`
   fragment SimpleCommand on CommandGuildCtx {
     id
@@ -431,7 +445,10 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<
 >;
 export const UpdatePrefixDocument = gql`
   mutation UpdatePrefix($input: UpdatePrefixInput!) {
-    updatePrefix(input: $input)
+    updatePrefix(input: $input) {
+      id
+      prefix
+    }
   }
 `;
 export type UpdatePrefixMutationFn = Apollo.MutationFunction<
@@ -534,14 +551,10 @@ export type CommandsQueryResult = Apollo.QueryResult<
 export const GuildConfigDocument = gql`
   query GuildConfig($guildId: ID!) {
     getGuildConfig(guildId: $guildId) {
-      id
-      prefix
-      shiriMinLen
-      shiriHandSize
-      ballMinVol
-      ballMaxVol
+      ...GuildConfigInfo
     }
   }
+  ${GuildConfigInfoFragmentDoc}
 `;
 
 /**
