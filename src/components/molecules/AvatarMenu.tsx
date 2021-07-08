@@ -1,7 +1,9 @@
-import React from 'react';
+import { Link } from '@material-ui/core';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import { Link } from '@material-ui/core';
+import { useRouter } from 'next/dist/client/router';
+import React from 'react';
+import { useLogoutMutation } from '../../graphql/generated';
 
 interface IAvatarMenu {
   anchorEl: null | HTMLElement;
@@ -12,8 +14,12 @@ export const AvatarMenu: React.FC<IAvatarMenu> = ({
   anchorEl,
   handleClose,
 }) => {
-  function handleLogout() {
-    // TODO: log out!
+  const router = useRouter();
+  const [logout] = useLogoutMutation();
+  async function handleLogout() {
+    await logout();
+    // push to landing page
+    router.push(process.env.NEXT_PUBLIC_LANDING_PAGE_URL);
   }
   return (
     <Menu

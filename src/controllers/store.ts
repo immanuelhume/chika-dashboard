@@ -16,6 +16,9 @@ export interface IStoreFields {
   // Layout
   mobileOpen: boolean;
   toggleMobileOpen: () => void;
+
+  // wow
+  clearStore: () => void;
 }
 
 export const useStore = create<IStoreFields>(
@@ -34,6 +37,9 @@ export const useStore = create<IStoreFields>(
         mobileOpen: false,
         toggleMobileOpen: () =>
           set(({ mobileOpen }) => set({ mobileOpen: !mobileOpen })),
+
+        // wow
+        clearStore: () => set({}, true),
       }),
       { name: 'zustand-store', whitelist: ['user', 'guilds', 'activeGuild'] },
     ),

@@ -60,7 +60,6 @@ export const Commands: React.FC<ICommands> = ({ activeGuild }) => {
     // TODO: add loading spinner
     return null;
   }
-  // TODO: handle error
   if (!data) {
     return null;
   }
