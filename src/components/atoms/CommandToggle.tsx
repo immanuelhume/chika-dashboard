@@ -1,5 +1,6 @@
 import { makeStyles, Theme } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
+import { useSnackbar } from 'notistack';
 import React, { useCallback } from 'react';
 import { useStore } from '../../controllers/store';
 import {
@@ -47,31 +48,38 @@ const useStyles = makeStyles((theme: Theme) => ({
   focusVisible: {},
 }));
 
-type ICommandToggle = Pick<SimpleCommandFragment, 'commandId' | 'disabled'>;
+type ICommandToggle = Pick<
+  SimpleCommandFragment,
+  'commandId' | 'disabled' | 'name'
+>;
 
 export const CommandToggle: React.FC<ICommandToggle> = ({
   disabled,
   commandId,
+  name,
 }) => {
   const activeGuild = useStore(useCallback((state) => state.activeGuild, []));
   const [disable] = useDisabledCommandMutation();
   const [enable] = useEnableCommandMutation();
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   if (!activeGuild) return null;
   const variables: { input: ToggleCommandInput } = {
     input: { commandId, guildId: activeGuild.id },
   };
 
-  const handleToggle: React.ComponentProps<typeof Switch>['onChange'] = (
+  const handleToggle: React.ComponentProps<typeof Switch>['onChange'] = async (
     _,
     checked,
   ) => {
     const _disabled = !checked;
     if (_disabled) {
-      disable({ variables });
+      await disable({ variables });
+      enqueueSnackbar(`Command '${name}' disabled`, { variant: 'warning' });
     } else {
-      enable({ variables });
+      await enable({ variables });
+      enqueueSnackbar(`Command '${name}' enabled`, { variant: 'success' });
     }
   };
 

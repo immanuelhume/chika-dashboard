@@ -17,7 +17,9 @@ export const CommandCard: React.FC<ICommandCard> = ({
   <Card>
     <CardHeader
       title={name}
-      action={<CommandToggle commandId={commandId} disabled={disabled} />}
+      action={
+        <CommandToggle commandId={commandId} disabled={disabled} name={name} />
+      }
     />
     <CardContent>
       <Typography color="textSecondary">{description}</Typography>
