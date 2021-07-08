@@ -28,6 +28,7 @@ export default function Home() {
 
   // TODO: loading spinner
   if (loading) return null;
+  // FIXME: handle case when there are no guilds
 
   return (
     <Layout>
