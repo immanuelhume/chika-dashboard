@@ -4,6 +4,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import BubbleChartIcon from '@material-ui/icons/BubbleChart';
+import HomeIcon from '@material-ui/icons/Home';
 import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 
@@ -14,6 +15,11 @@ interface MenuLink {
 }
 
 const links: MenuLink[] = [
+  {
+    primary: 'Home',
+    href: '/',
+    Icon: HomeIcon,
+  },
   {
     primary: 'Commands',
     href: '/commands',

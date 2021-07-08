@@ -6,9 +6,9 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import React from 'react';
 
-interface IAuthModal extends React.ComponentProps<typeof Dialog> {}
+interface ILoginPrompt extends React.ComponentProps<typeof Dialog> {}
 
-export const AuthModal: React.FC<IAuthModal> = ({ ...props }) => {
+export const LoginPrompt: React.FC<ILoginPrompt> = ({ ...props }) => {
   return (
     <Dialog {...props}>
       <DialogTitle>Your session has expired!</DialogTitle>

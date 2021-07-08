@@ -1,7 +1,10 @@
 import { makeStyles, Theme } from '@material-ui/core';
-import Box from '@material-ui/core/Box';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import _ from 'lodash';
 import React from 'react';
 import {
@@ -27,19 +30,20 @@ interface ICommandGroup {
 const CommandGroup: React.FC<ICommandGroup> = ({ group, commands }) => {
   const classes = useStyles();
   return (
-    <Box className={classes.root}>
-      <Typography variant="h4" gutterBottom>
-        {_.capitalize(group)}
-      </Typography>
-
-      <Grid container spacing={3}>
-        {commands.map((command) => (
-          <Grid item sm={12} md={6} lg={4} key={command.id}>
-            <CommandCard {...command} />
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
+    <Accordion TransitionProps={{ unmountOnExit: true }} defaultExpanded>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography variant="h5">{_.capitalize(group)}</Typography>
+      </AccordionSummary>
+      <AccordionDetails>
+        <Grid container spacing={3}>
+          {commands.map((command) => (
+            <Grid item xs={12} md={6} lg={4} key={command.id}>
+              <CommandCard {...command} />
+            </Grid>
+          ))}
+        </Grid>
+      </AccordionDetails>
+    </Accordion>
   );
 };
 
