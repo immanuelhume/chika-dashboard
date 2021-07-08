@@ -11,7 +11,7 @@ export interface IStoreFields {
 
   // Active guild
   activeGuild?: Guild;
-  setActiveGuild: (guild: Guild) => void;
+  setActiveGuild: (guild?: Guild) => void;
 
   // Layout
   mobileOpen: boolean;
@@ -28,7 +28,7 @@ export const useStore = create<IStoreFields>(
         setGuilds: (guilds: Guild[]) => set({ guilds }),
 
         // Active guild
-        setActiveGuild: (guild: Guild) => set({ activeGuild: guild }),
+        setActiveGuild: (guild?: Guild) => set({ activeGuild: guild }),
 
         // Layout
         mobileOpen: false,

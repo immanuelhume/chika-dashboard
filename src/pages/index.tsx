@@ -6,10 +6,20 @@ import { useMeQuery } from '../graphql/generated';
 
 export default function Home() {
   const { data, loading, error } = useMeQuery();
-  const { setUser, setGuilds } = useStore(
-    // eslint-disable-next-line no-shadow
-    useCallback(({ setUser, setGuilds }) => ({ setUser, setGuilds }), []),
+  const { setUser, setGuilds, setActiveGuild } = useStore(
+    useCallback(
+      // eslint-disable-next-line no-shadow
+      ({ setUser, setGuilds, setActiveGuild }) => ({
+        setUser,
+        setGuilds,
+        setActiveGuild,
+      }),
+      [],
+    ),
   );
+  useEffect(() => {
+    setActiveGuild();
+  }, [setActiveGuild]);
   useEffect(() => {
     setUser(data?.getUser);
     setGuilds(data?.getUser.guilds || []);

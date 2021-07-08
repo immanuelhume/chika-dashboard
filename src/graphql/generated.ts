@@ -61,6 +61,7 @@ export type Guild = {
   __typename?: 'Guild';
   icon: Scalars['String'];
   id: Scalars['ID'];
+  isChikaIn: Scalars['Boolean'];
   name: Scalars['String'];
 };
 
@@ -156,7 +157,10 @@ export type MeQuery = { __typename?: 'Query' } & {
     'id' | 'username' | 'avatar'
   > & {
       guilds: Array<
-        { __typename?: 'Guild' } & Pick<Guild, 'id' | 'name' | 'icon'>
+        { __typename?: 'Guild' } & Pick<
+          Guild,
+          'id' | 'name' | 'icon' | 'isChikaIn'
+        >
       >;
     };
 };
@@ -382,6 +386,7 @@ export const MeDocument = gql`
         id
         name
         icon
+        isChikaIn
       }
     }
   }
