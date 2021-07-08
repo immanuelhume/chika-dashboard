@@ -4,6 +4,7 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import { useRouter } from 'next/dist/client/router';
+import { useSnackbar } from 'notistack';
 import React, { useCallback } from 'react';
 import { useStore } from '../../controllers/store';
 import { Guild, useHasChikaMutation } from '../../graphql/generated';
@@ -32,19 +33,22 @@ export const GuildBar: React.FC<IGuildBar> = ({ guild }) => {
   );
   const [hasChika] = useHasChikaMutation({ variables: { guildId: guild.id } });
   const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
 
   async function handleClick() {
     const res = await hasChika();
+    if (res.errors) {
+      alert('got an error, probably need to re-authenticate');
+    }
     if (!res.data?.hasChika) {
-      // TODO: snackbar alert no config
-      alert('guild is not in db');
+      enqueueSnackbar(
+        `Chika might not be in ${guild.name}. However, your settings will be saved.`,
+        { variant: 'warning' },
+      );
     }
     setActiveGuild(guild);
     // push to /commands
-    router.push({
-      pathname: '/[guildId]/commands',
-      query: { guildId: guild.id },
-    });
+    router.push('/commands');
   }
 
   return (
