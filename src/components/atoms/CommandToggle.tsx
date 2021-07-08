@@ -76,10 +76,20 @@ export const CommandToggle: React.FC<ICommandToggle> = ({
     const _disabled = !checked;
     if (_disabled) {
       await disable({ variables });
-      enqueueSnackbar(`Command '${name}' disabled`, { variant: 'warning' });
+      enqueueSnackbar(
+        <div>
+          Command <b>{name}</b> disabled
+        </div>,
+        { variant: 'warning' },
+      );
     } else {
       await enable({ variables });
-      enqueueSnackbar(`Command '${name}' enabled`, { variant: 'success' });
+      enqueueSnackbar(
+        <div>
+          Command <b>{name}</b> enabled
+        </div>,
+        { variant: 'success' },
+      );
     }
   };
 

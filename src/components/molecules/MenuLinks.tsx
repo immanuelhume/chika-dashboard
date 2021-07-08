@@ -3,9 +3,9 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import BubbleChartIcon from '@material-ui/icons/BubbleChart';
-import HomeIcon from '@material-ui/icons/Home';
-import SettingsIcon from '@material-ui/icons/Settings';
+import BubbleChartRoundedIcon from '@material-ui/icons/BubbleChartRounded';
+import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import { useRouter } from 'next/dist/client/router';
 import React from 'react';
 
@@ -19,17 +19,17 @@ const links: MenuLink[] = [
   {
     primary: 'Home',
     href: '/',
-    Icon: HomeIcon,
+    Icon: HomeRoundedIcon,
   },
   {
     primary: 'Commands',
     href: '/commands',
-    Icon: BubbleChartIcon,
+    Icon: BubbleChartRoundedIcon,
   },
   {
     primary: 'Settings',
     href: '/settings',
-    Icon: SettingsIcon,
+    Icon: SettingsRoundedIcon,
   },
 ];
 

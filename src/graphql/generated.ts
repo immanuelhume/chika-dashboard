@@ -65,14 +65,29 @@ export type Guild = {
   name: Scalars['String'];
 };
 
+export type GuildConfig = {
+  __typename?: 'GuildConfig';
+  ballMaxVol: Scalars['Int'];
+  ballMinVol: Scalars['Int'];
+  id: Scalars['ID'];
+  prefix: Scalars['String'];
+  shiriHandSize: Scalars['Int'];
+  shiriMinLen: Scalars['Int'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   disableCommand: CommandGuildCtx;
   enableCommand: CommandGuildCtx;
-  /** Checks our database for this guild. */
+  /**
+   * Checks our database for this guild.
+   * @deprecated We are syncing with the bot now, no need for this check
+   */
   hasChika: Scalars['Boolean'];
   /** Returns true if logout was successful. */
   logout: Scalars['Boolean'];
+  /** The new prefix */
+  updatePrefix: Scalars['String'];
 };
 
 export type MutationDisableCommandArgs = {
@@ -84,13 +99,18 @@ export type MutationEnableCommandArgs = {
 };
 
 export type MutationHasChikaArgs = {
-  guildId: Scalars['String'];
+  guildId: Scalars['ID'];
+};
+
+export type MutationUpdatePrefixArgs = {
+  input: UpdatePrefixInput;
 };
 
 export type Query = {
   __typename?: 'Query';
   getAllCommands: Array<Command>;
   getCommandsUnderGuildCtx: Array<CommandGuildCtx>;
+  getGuildConfig: GuildConfig;
   getUser: User;
 };
 
@@ -98,9 +118,18 @@ export type QueryGetCommandsUnderGuildCtxArgs = {
   guildId: Scalars['String'];
 };
 
+export type QueryGetGuildConfigArgs = {
+  guildId: Scalars['ID'];
+};
+
 export type ToggleCommandInput = {
   commandId: Scalars['Int'];
   guildId: Scalars['String'];
+};
+
+export type UpdatePrefixInput = {
+  guildId: Scalars['ID'];
+  prefix: Scalars['String'];
 };
 
 export type User = {
@@ -133,7 +162,7 @@ export type EnableCommandMutation = { __typename?: 'Mutation' } & {
 };
 
 export type HasChikaMutationVariables = Exact<{
-  guildId: Scalars['String'];
+  guildId: Scalars['ID'];
 }>;
 
 export type HasChikaMutation = { __typename?: 'Mutation' } & Pick<
@@ -148,6 +177,15 @@ export type LogoutMutation = { __typename?: 'Mutation' } & Pick<
   'logout'
 >;
 
+export type UpdatePrefixMutationVariables = Exact<{
+  input: UpdatePrefixInput;
+}>;
+
+export type UpdatePrefixMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'updatePrefix'
+>;
+
 export type CommandsQueryVariables = Exact<{
   guildId: Scalars['String'];
 }>;
@@ -155,6 +193,22 @@ export type CommandsQueryVariables = Exact<{
 export type CommandsQuery = { __typename?: 'Query' } & {
   getCommandsUnderGuildCtx: Array<
     { __typename?: 'CommandGuildCtx' } & SimpleCommandFragment
+  >;
+};
+
+export type GuildConfigQueryVariables = Exact<{
+  guildId: Scalars['ID'];
+}>;
+
+export type GuildConfigQuery = { __typename?: 'Query' } & {
+  getGuildConfig: { __typename?: 'GuildConfig' } & Pick<
+    GuildConfig,
+    | 'id'
+    | 'prefix'
+    | 'shiriMinLen'
+    | 'shiriHandSize'
+    | 'ballMinVol'
+    | 'ballMaxVol'
   >;
 };
 
@@ -287,7 +341,7 @@ export type EnableCommandMutationOptions = Apollo.BaseMutationOptions<
   EnableCommandMutationVariables
 >;
 export const HasChikaDocument = gql`
-  mutation HasChika($guildId: String!) {
+  mutation HasChika($guildId: ID!) {
     hasChika(guildId: $guildId)
   }
 `;
@@ -375,6 +429,54 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<
   LogoutMutation,
   LogoutMutationVariables
 >;
+export const UpdatePrefixDocument = gql`
+  mutation UpdatePrefix($input: UpdatePrefixInput!) {
+    updatePrefix(input: $input)
+  }
+`;
+export type UpdatePrefixMutationFn = Apollo.MutationFunction<
+  UpdatePrefixMutation,
+  UpdatePrefixMutationVariables
+>;
+
+/**
+ * __useUpdatePrefixMutation__
+ *
+ * To run a mutation, you first call `useUpdatePrefixMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePrefixMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePrefixMutation, { data, loading, error }] = useUpdatePrefixMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePrefixMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdatePrefixMutation,
+    UpdatePrefixMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdatePrefixMutation,
+    UpdatePrefixMutationVariables
+  >(UpdatePrefixDocument, options);
+}
+export type UpdatePrefixMutationHookResult = ReturnType<
+  typeof useUpdatePrefixMutation
+>;
+export type UpdatePrefixMutationResult =
+  Apollo.MutationResult<UpdatePrefixMutation>;
+export type UpdatePrefixMutationOptions = Apollo.BaseMutationOptions<
+  UpdatePrefixMutation,
+  UpdatePrefixMutationVariables
+>;
 export const CommandsDocument = gql`
   query Commands($guildId: String!) {
     getCommandsUnderGuildCtx(guildId: $guildId) {
@@ -428,6 +530,67 @@ export type CommandsLazyQueryHookResult = ReturnType<
 export type CommandsQueryResult = Apollo.QueryResult<
   CommandsQuery,
   CommandsQueryVariables
+>;
+export const GuildConfigDocument = gql`
+  query GuildConfig($guildId: ID!) {
+    getGuildConfig(guildId: $guildId) {
+      id
+      prefix
+      shiriMinLen
+      shiriHandSize
+      ballMinVol
+      ballMaxVol
+    }
+  }
+`;
+
+/**
+ * __useGuildConfigQuery__
+ *
+ * To run a query within a React component, call `useGuildConfigQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGuildConfigQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGuildConfigQuery({
+ *   variables: {
+ *      guildId: // value for 'guildId'
+ *   },
+ * });
+ */
+export function useGuildConfigQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    GuildConfigQuery,
+    GuildConfigQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<GuildConfigQuery, GuildConfigQueryVariables>(
+    GuildConfigDocument,
+    options,
+  );
+}
+export function useGuildConfigLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    GuildConfigQuery,
+    GuildConfigQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<GuildConfigQuery, GuildConfigQueryVariables>(
+    GuildConfigDocument,
+    options,
+  );
+}
+export type GuildConfigQueryHookResult = ReturnType<typeof useGuildConfigQuery>;
+export type GuildConfigLazyQueryHookResult = ReturnType<
+  typeof useGuildConfigLazyQuery
+>;
+export type GuildConfigQueryResult = Apollo.QueryResult<
+  GuildConfigQuery,
+  GuildConfigQueryVariables
 >;
 export const MeDocument = gql`
   query Me {

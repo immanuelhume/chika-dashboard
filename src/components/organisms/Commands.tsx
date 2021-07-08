@@ -3,7 +3,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import _ from 'lodash';
 import React from 'react';
 import {
@@ -24,7 +24,7 @@ interface ICommandGroup {
 const CommandGroup: React.FC<ICommandGroup> = ({ group, commands }) => {
   return (
     <Accordion TransitionProps={{ unmountOnExit: true }} defaultExpanded>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary expandIcon={<ExpandMoreRoundedIcon />}>
         <Typography variant="h5">{_.capitalize(group)}</Typography>
       </AccordionSummary>
       <AccordionDetails>

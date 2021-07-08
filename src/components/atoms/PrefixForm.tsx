@@ -1,9 +1,11 @@
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
-import PublishIcon from '@material-ui/icons/Publish';
+import PublishRoundedIcon from '@material-ui/icons/PublishRounded';
 import { useFormik, FormikProvider, Form, Field, FieldProps } from 'formik';
+import { useSnackbar } from 'notistack';
 import React from 'react';
 import * as yup from 'yup';
+import { useUpdatePrefixMutation } from '../../graphql/generated';
 
 const validationSchema = yup.object({
   prefix: yup
@@ -12,13 +14,33 @@ const validationSchema = yup.object({
     .required("Please don't leave this blank owo"),
 });
 
-interface IPrefixForm {}
+interface IPrefixForm {
+  guildId: string;
+  prefix: string;
+}
 
-export const PrefixForm: React.FC<IPrefixForm> = () => {
+export const PrefixForm: React.FC<IPrefixForm> = ({
+  guildId,
+  prefix: initialPrefix,
+}) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const [updatePrefix] = useUpdatePrefixMutation();
   const formik = useFormik({
-    initialValues: { prefix: 'ck;' },
+    initialValues: { prefix: initialPrefix },
     validationSchema,
-    onSubmit: (values) => alert(JSON.stringify(values, null, 2)),
+    // eslint-disable-next-line no-shadow
+    onSubmit: async ({ prefix }) => {
+      if (prefix === initialPrefix) return;
+      await updatePrefix({
+        variables: { input: { guildId, prefix } },
+      });
+      enqueueSnackbar(
+        <div>
+          Prefix set to <b>{prefix}</b>
+        </div>,
+        { variant: 'success' },
+      );
+    },
   });
 
   return (
@@ -36,8 +58,9 @@ export const PrefixForm: React.FC<IPrefixForm> = () => {
             />
           )}
         </Field>
+        {/* TODO: loading indicator for this button */}
         <IconButton aria-label="submit da form" type="submit">
-          <PublishIcon />
+          <PublishRoundedIcon />
         </IconButton>
       </Form>
     </FormikProvider>

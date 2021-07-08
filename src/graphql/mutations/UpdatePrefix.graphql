@@ -1,0 +1,3 @@
+mutation UpdatePrefix($input: UpdatePrefixInput!) {
+  updatePrefix(input: $input)
+}

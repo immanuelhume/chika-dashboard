@@ -6,7 +6,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import SwapVertIcon from '@material-ui/icons/SwapVert';
+import SwapVertRoundedIcon from '@material-ui/icons/SwapVertRounded';
 import { useSnackbar } from 'notistack';
 import React, { useCallback, useState } from 'react';
 import { useStore } from '../../controllers/store';
@@ -51,7 +51,7 @@ export const GuildMenu: React.FC = () => {
           </ListItemAvatar>
           <ListItemText primary={activeGuild?.name || 'Choose a server'} />
           <ListItemIcon>
-            <SwapVertIcon />
+            <SwapVertRoundedIcon />
           </ListItemIcon>
         </ListItem>
       </List>

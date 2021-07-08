@@ -4,9 +4,15 @@ import CardContent from '@material-ui/core/CardContent';
 import React from 'react';
 import { PrefixForm } from '../atoms/PrefixForm';
 
-interface IPrefixSettingsCard {}
+interface IPrefixSettingsCard {
+  guildId: string;
+  prefix: string;
+}
 
-export const PrefixSettingsCard: React.FC<IPrefixSettingsCard> = () => {
+export const PrefixSettingsCard: React.FC<IPrefixSettingsCard> = ({
+  guildId,
+  prefix,
+}) => {
   return (
     <Card>
       <CardHeader
@@ -14,7 +20,7 @@ export const PrefixSettingsCard: React.FC<IPrefixSettingsCard> = () => {
         subheader="These characters will trigger Chika."
       />
       <CardContent>
-        <PrefixForm />
+        <PrefixForm guildId={guildId} prefix={prefix} />
       </CardContent>
     </Card>
   );

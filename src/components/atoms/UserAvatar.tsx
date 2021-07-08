@@ -2,7 +2,7 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import NoSsr from '@material-ui/core/NoSsr';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreRoundedIcon from '@material-ui/icons/ExpandMoreRounded';
 import React, { useCallback, useState } from 'react';
 import { useStore } from '../../controllers/store';
 import { avatar } from '../../lib/discord';
@@ -34,7 +34,7 @@ export const UserAvatar: React.FC = () => {
         <NoSsr>
           <Avatar src={avatar(user?.id, user?.avatar)} />
         </NoSsr>
-        <ExpandMoreIcon />
+        <ExpandMoreRoundedIcon />
       </ButtonBase>
       <AvatarMenu anchorEl={anchorEl} handleClose={handleClose} />
     </>
