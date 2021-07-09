@@ -29,6 +29,7 @@ export const BalloonForm: React.FC<IBalloonForm> = ({ config }) => {
   const { enqueueSnackbar } = useSnackbar();
   const [updateBalloon] = useUpdateBalloonMutation();
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: { minVol: ballMinVol, maxVol: ballMaxVol },
     validationSchema,
     onSubmit: async ({ minVol, maxVol }, { setSubmitting }) => {

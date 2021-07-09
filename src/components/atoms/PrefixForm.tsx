@@ -25,6 +25,7 @@ export const PrefixForm: React.FC<IPrefixForm> = ({
   const { enqueueSnackbar } = useSnackbar();
   const [updatePrefix] = useUpdatePrefixMutation();
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: { prefix: initialPrefix },
     validationSchema,
     // eslint-disable-next-line no-shadow

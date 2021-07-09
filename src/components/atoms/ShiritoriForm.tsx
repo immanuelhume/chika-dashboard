@@ -35,6 +35,7 @@ export const ShiritoriForm: React.FC<IShiritoriForm> = ({ config }) => {
       handSize: shiriHandSize,
       minLen: shiriMinLen,
     },
+    enableReinitialize: true,
     validationSchema,
     onSubmit: async ({ handSize, minLen }, { setSubmitting }) => {
       if (handSize === shiriHandSize && minLen === shiriMinLen) return;
