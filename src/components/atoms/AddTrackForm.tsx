@@ -1,8 +1,8 @@
 import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
-import PlaylistAddRoundedIcon from '@material-ui/icons/PlaylistAddRounded';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
+import PlaylistAddRoundedIcon from '@material-ui/icons/PlaylistAddRounded';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import { Field, FieldProps, Form, FormikProvider, useFormik } from 'formik';
 import React from 'react';
@@ -59,8 +59,8 @@ export const AddTrackForm: React.FC<IAddTrackForm> = ({ activeGuild }) => {
       await addTrack({
         variables: { input: { guildId: activeGuild.id, youtubeUrl: url } },
       });
-      setSubmitting(false);
       resetForm();
+      setSubmitting(false);
     },
   });
 

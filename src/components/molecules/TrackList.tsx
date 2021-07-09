@@ -6,9 +6,12 @@ import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
 import Typography from '@material-ui/core/Typography';
 import { MoreVert as MoreVertIcon } from '@material-ui/icons';
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
+import _ from 'lodash';
+import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { activeGuildSelector, useStore } from '../../controllers/store';
@@ -27,14 +30,27 @@ interface ITrackList {}
 
 export const TrackList: React.FC<ITrackList> = () => {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   const activeGuild = useStore(activeGuildSelector);
-  const [getTracks, { data, loading }] = useTracksLazyQuery({
+  const [getTracks, { data, loading, previousData }] = useTracksLazyQuery({
     pollInterval: 5000,
   });
   useEffect(() => {
     if (!activeGuild) return;
     getTracks({ variables: { guildId: activeGuild.id } });
   }, [activeGuild, getTracks]);
+  useEffect(() => {
+    if (!previousData || !data) return;
+    const added = _.differenceBy(data.getTracks, previousData.getTracks, 'id');
+    added.forEach(({ title }) => {
+      enqueueSnackbar(
+        <span>
+          Added <b>{_.truncate(title)}</b>
+        </span>,
+        { variant: 'success' },
+      );
+    });
+  }, [previousData, data, enqueueSnackbar]);
   if (loading) {
     // TODO:
     return null;
@@ -48,27 +64,29 @@ export const TrackList: React.FC<ITrackList> = () => {
     index,
     style,
   }) => {
+    const { title, duration, url } = data.getTracks[index];
     return (
-      <ListItem divider style={style} className={classes.root}>
+      <ListItem divider button style={style} className={classes.root}>
         <ListItemText
           disableTypography
           primary={
             <Typography variant="body1" color="textPrimary" noWrap>
-              {data.getTracks[index].title}
+              {title}
             </Typography>
           }
           secondary={
             <Typography variant="body2" color="textSecondary" noWrap>
-              {data.getTracks[index].duration}
+              {duration}
             </Typography>
           }
-        >
+        />
+        <ScopedCssBaseline>
           <ListItemSecondaryAction>
             <IconButton size="small">
               <RemoveCircleRoundedIcon />
             </IconButton>
           </ListItemSecondaryAction>
-        </ListItemText>
+        </ScopedCssBaseline>
       </ListItem>
     );
   };
