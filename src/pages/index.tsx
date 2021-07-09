@@ -19,20 +19,16 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function Home() {
   const { data, loading, error } = useMeQuery();
-  const { setUser, setGuilds, setActiveGuild } = useStore(
+  const { setUser, setGuilds } = useStore(
     useCallback(
       // eslint-disable-next-line no-shadow
-      ({ setUser, setGuilds, setActiveGuild }) => ({
+      ({ setUser, setGuilds }) => ({
         setUser,
         setGuilds,
-        setActiveGuild,
       }),
       [],
     ),
   );
-  useEffect(() => {
-    setActiveGuild();
-  }, [setActiveGuild]);
   useEffect(() => {
     setUser(data?.getUser);
     setGuilds(data?.getUser.guilds || []);
