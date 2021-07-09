@@ -2,7 +2,6 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import React, { useCallback, useEffect } from 'react';
-import { LoginPrompt } from '../components/molecules/LoginPrompt';
 import { GuildBars } from '../components/organisms/GuildBars';
 import { Layout } from '../components/organisms/Layout';
 import { LoadingScreen } from '../components/organisms/LoadingScreen';
@@ -30,8 +29,12 @@ export default function Home() {
     ),
   );
   useEffect(() => {
-    setUser(data?.getUser);
-    setGuilds(data?.getUser.guilds || []);
+    if (!data) return;
+    const {
+      getUser: { guilds, ...user },
+    } = data;
+    setUser(user);
+    setGuilds(guilds || []);
   }, [data, setUser, setGuilds]);
   const classes = useStyles();
 
@@ -48,7 +51,6 @@ export default function Home() {
         </Typography>
         <GuildBars />
       </Container>
-      {/* <LoginPrompt open={!!error} /> */}
     </Layout>
   );
 }

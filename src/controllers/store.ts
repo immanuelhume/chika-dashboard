@@ -4,8 +4,8 @@ import { Guild, User } from '../graphql/generated';
 
 export interface IStoreFields {
   // User info
-  user?: Omit<User, 'guild'>;
-  setUser: (user?: User) => void;
+  user?: Omit<User, 'guilds'>;
+  setUser: (user?: Omit<User, 'guilds'>) => void;
   guilds: Guild[];
   setGuilds: (guilds: Guild[]) => void;
   unauthorized?: boolean;
@@ -27,7 +27,7 @@ export const useStore = create<IStoreFields>(
     persist(
       (set) => ({
         // User info
-        setUser: (user?: User) => set({ user }),
+        setUser: (user?: Omit<User, 'guilds'>) => set({ user }),
         guilds: [],
         setGuilds: (guilds: Guild[]) => set({ guilds }),
 
