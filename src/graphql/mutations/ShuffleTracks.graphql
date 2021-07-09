@@ -1,0 +1,5 @@
+mutation ShuffleTracks($guildId: ID!) {
+  shuffleTracks(guildId: $guildId) {
+    id
+  }
+}

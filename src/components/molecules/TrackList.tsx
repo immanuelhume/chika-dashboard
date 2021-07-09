@@ -8,7 +8,6 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
 import Typography from '@material-ui/core/Typography';
-import { MoreVert as MoreVertIcon } from '@material-ui/icons';
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
 import _ from 'lodash';
 import { useSnackbar } from 'notistack';
@@ -17,6 +16,7 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { activeGuildSelector, useStore } from '../../controllers/store';
 import { useTracksLazyQuery } from '../../graphql/generated';
 import { AddTrackForm } from '../atoms/AddTrackForm';
+import { ShuffleButton } from '../atoms/ShuffleButton';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,6 +40,7 @@ export const TrackList: React.FC<ITrackList> = () => {
     getTracks({ variables: { guildId: activeGuild.id } });
   }, [activeGuild, getTracks]);
   useEffect(() => {
+    // snackbar if song was added
     if (!previousData || !data) return;
     const added = _.differenceBy(data.getTracks, previousData.getTracks, 'id');
     added.forEach(({ title }) => {
@@ -64,7 +65,7 @@ export const TrackList: React.FC<ITrackList> = () => {
     index,
     style,
   }) => {
-    const { title, duration, url } = data.getTracks[index];
+    const { title, duration } = data.getTracks[index];
     return (
       <ListItem divider button style={style} className={classes.root}>
         <ListItemText
@@ -94,11 +95,7 @@ export const TrackList: React.FC<ITrackList> = () => {
   return (
     <Card>
       <CardHeader
-        action={
-          <IconButton aria-label="">
-            <MoreVertIcon />
-          </IconButton>
-        }
+        action={<ShuffleButton guildId={activeGuild.id} />}
         title="Queued"
         subheader={`${data.getTracks.length} tracks`}
       />

@@ -280,6 +280,14 @@ export type LogoutMutation = { __typename?: 'Mutation' } & Pick<
   'logout'
 >;
 
+export type ShuffleTracksMutationVariables = Exact<{
+  guildId: Scalars['ID'];
+}>;
+
+export type ShuffleTracksMutation = { __typename?: 'Mutation' } & {
+  shuffleTracks: Array<{ __typename?: 'Track' } & Pick<Track, 'id'>>;
+};
+
 export type UpdateBalloonMutationVariables = Exact<{
   input: UpdateBalloonInput;
 }>;
@@ -623,6 +631,56 @@ export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<
   LogoutMutation,
   LogoutMutationVariables
+>;
+export const ShuffleTracksDocument = gql`
+  mutation ShuffleTracks($guildId: ID!) {
+    shuffleTracks(guildId: $guildId) {
+      id
+    }
+  }
+`;
+export type ShuffleTracksMutationFn = Apollo.MutationFunction<
+  ShuffleTracksMutation,
+  ShuffleTracksMutationVariables
+>;
+
+/**
+ * __useShuffleTracksMutation__
+ *
+ * To run a mutation, you first call `useShuffleTracksMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useShuffleTracksMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [shuffleTracksMutation, { data, loading, error }] = useShuffleTracksMutation({
+ *   variables: {
+ *      guildId: // value for 'guildId'
+ *   },
+ * });
+ */
+export function useShuffleTracksMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    ShuffleTracksMutation,
+    ShuffleTracksMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    ShuffleTracksMutation,
+    ShuffleTracksMutationVariables
+  >(ShuffleTracksDocument, options);
+}
+export type ShuffleTracksMutationHookResult = ReturnType<
+  typeof useShuffleTracksMutation
+>;
+export type ShuffleTracksMutationResult =
+  Apollo.MutationResult<ShuffleTracksMutation>;
+export type ShuffleTracksMutationOptions = Apollo.BaseMutationOptions<
+  ShuffleTracksMutation,
+  ShuffleTracksMutationVariables
 >;
 export const UpdateBalloonDocument = gql`
   mutation UpdateBalloon($input: UpdateBalloonInput!) {
