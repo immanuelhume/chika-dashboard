@@ -37,7 +37,7 @@ export const RemoveTrackButton: React.FC<IRemoveTrackButton> = ({
       { variant: 'warning' },
     );
   }
-
+  // TODO: loading state
   return (
     <IconButton size="small" onClick={handleClick}>
       <RemoveCircleRoundedIcon />

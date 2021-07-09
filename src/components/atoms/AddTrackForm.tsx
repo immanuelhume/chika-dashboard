@@ -86,6 +86,7 @@ export const AddTrackForm: React.FC<IAddTrackForm> = ({ activeGuild }) => {
             />
           )}
         </Field>
+        {/* TODO: loading state */}
         <IconButton edge="end" size="medium" type="submit">
           <PlaylistAddRoundedIcon />
         </IconButton>

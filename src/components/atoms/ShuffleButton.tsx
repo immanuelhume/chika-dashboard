@@ -16,6 +16,7 @@ export const ShuffleButton: React.FC<IShuffleButton> = ({ guildId }) => {
   function handleClose() {
     setAnchorEl(null);
   }
+  // TODO: loading state
 
   return (
     <>

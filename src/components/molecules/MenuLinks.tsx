@@ -48,7 +48,12 @@ export const MenuLinks: React.FC<IMenuLinks> = () => {
       <Divider />
       <List>
         {links.map(({ primary, Icon, href }) => (
-          <ListItem button key={primary} onClick={() => router.push(href)}>
+          <ListItem
+            button
+            key={primary}
+            onClick={() => router.push(href)}
+            selected={router.route === href}
+          >
             <ListItemIcon>
               <Icon />
             </ListItemIcon>
