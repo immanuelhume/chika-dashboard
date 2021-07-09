@@ -48,7 +48,7 @@ export default function Home() {
         </Typography>
         <GuildBars />
       </Container>
-      <LoginPrompt open={!!error} />
+      {/* <LoginPrompt open={!!error} /> */}
     </Layout>
   );
 }

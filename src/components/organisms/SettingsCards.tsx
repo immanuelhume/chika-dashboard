@@ -3,6 +3,7 @@ import { Guild, useGuildConfigQuery } from '../../graphql/generated';
 import { BalloonSettingsCard } from '../molecules/BalloonSettingsCard';
 import { PrefixSettingsCard } from '../molecules/PrefixSettingsCard';
 import { ShiritoriSettingsCard } from '../molecules/ShiritoriSettingsCard';
+import { Layout } from './Layout';
 import { LoadingScreen } from './LoadingScreen';
 
 interface ISettingsCards {
@@ -18,7 +19,7 @@ export const SettingsCards: React.FC<ISettingsCards> = ({ activeGuild }) => {
   }
   if (error || !data) {
     // TODO: handle error
-    return null;
+    return <Layout />;
   }
   return (
     <>

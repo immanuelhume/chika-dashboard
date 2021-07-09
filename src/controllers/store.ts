@@ -8,6 +8,7 @@ export interface IStoreFields {
   setUser: (user?: User) => void;
   guilds: Guild[];
   setGuilds: (guilds: Guild[]) => void;
+  unauthorized?: boolean;
 
   // Active guild
   activeGuild?: Guild;
@@ -41,7 +42,10 @@ export const useStore = create<IStoreFields>(
         // wow
         clearStore: () => set({}, true),
       }),
-      { name: 'zustand-store', whitelist: ['user', 'guilds', 'activeGuild'] },
+      {
+        name: 'zustand-store',
+        whitelist: ['user', 'guilds', 'activeGuild'],
+      },
     ),
   ),
 );

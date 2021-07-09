@@ -1,3 +1,4 @@
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 import { useFormikContext } from 'formik';
 import { useSnackbar } from 'notistack';
@@ -22,6 +23,20 @@ interface IResetButton {
   guildId: string;
 }
 
+interface IRootButton {
+  handleClick: React.ComponentProps<typeof Button>['onClick'];
+  loading: boolean;
+}
+
+const RootButton: React.FC<IRootButton> = ({ handleClick, loading }) => {
+  return (
+    <>
+      <Button onClick={handleClick}>Reset default</Button>
+      <CircularProgress />
+    </>
+  );
+};
+
 export const ResetPrefixButton: React.FC<IResetButton> = ({ guildId }) => {
   const [updatePrefix] = useUpdatePrefixMutation();
   const { enqueueSnackbar } = useSnackbar();
@@ -33,7 +48,7 @@ export const ResetPrefixButton: React.FC<IResetButton> = ({ guildId }) => {
     formik.setValues({ prefix: DEFAULT_PREFIX });
     enqueueSnackbar('Reset prefix to default!', { variant: 'success' });
   }
-  return <Button onClick={handleClick}>Reset default</Button>;
+  return <RootButton handleClick={handleClick} loading={formik.isSubmitting} />;
 };
 
 export const ResetShiritoriButton: React.FC<IResetButton> = ({ guildId }) => {
