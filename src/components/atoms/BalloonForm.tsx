@@ -18,7 +18,9 @@ const validationSchema = yup.object({
     .required("Don't leave me empty!"),
   maxVol: yup
     .number()
-    .min(0, 'Idk man, this seems weird')
+    .when('minVol', (minVol: number, schema: any) =>
+      schema.min(minVol, 'This is lower than the minimum'),
+    )
     .required("Don't leave me empty!"),
 });
 
@@ -36,6 +38,7 @@ export const BalloonForm: React.FC<IBalloonForm> = ({ config }) => {
       setSubmitting(false);
     },
   });
+
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off">
