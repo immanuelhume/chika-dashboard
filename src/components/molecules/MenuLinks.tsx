@@ -8,6 +8,7 @@ import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import { useRouter } from 'next/dist/client/router';
 import React from 'react';
+import QueueMusicRoundedIcon from '@material-ui/icons/QueueMusicRounded';
 
 interface MenuLink {
   primary: string;
@@ -30,6 +31,11 @@ const links: MenuLink[] = [
     primary: 'Settings',
     href: '/settings',
     Icon: SettingsRoundedIcon,
+  },
+  {
+    primary: 'Music',
+    href: '/music',
+    Icon: QueueMusicRoundedIcon,
   },
 ];
 

@@ -1,5 +1,5 @@
-import Typography from '@material-ui/core/Typography';
 import React, { useCallback } from 'react';
+import { PageIntroText } from '../components/atoms/PageIntroText';
 import { Commands } from '../components/organisms/Commands';
 import { Layout } from '../components/organisms/Layout';
 import { useStore } from '../controllers/store';
@@ -11,9 +11,7 @@ export default function CommandsP() {
       <Layout>
         {activeGuild ? (
           <>
-            <Typography variant="body1" color="textSecondary" gutterBottom>
-              Toggle commands for your server.
-            </Typography>
+            <PageIntroText>Toggle commands for your server.</PageIntroText>
             <Commands activeGuild={activeGuild} />
           </>
         ) : (

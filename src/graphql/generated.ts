@@ -18,6 +18,11 @@ export type Scalars = {
   Float: number;
 };
 
+export type AddTrackInput = {
+  guildId: Scalars['ID'];
+  youtubeUrl: Scalars['String'];
+};
+
 export type Argument = {
   __typename?: 'Argument';
   command: Command;
@@ -77,6 +82,7 @@ export type GuildConfig = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  addTrack: Track;
   disableCommand: CommandGuildCtx;
   enableCommand: CommandGuildCtx;
   /**
@@ -86,9 +92,16 @@ export type Mutation = {
   hasChika: Scalars['Boolean'];
   /** Returns true if logout was successful. */
   logout: Scalars['Boolean'];
+  /** Returns the number of tracks removed. */
+  removeTrack: Scalars['Int'];
+  shuffleTracks: Array<Track>;
   updateBalloon: GuildConfig;
   updatePrefix: GuildConfig;
   updateShiritori: GuildConfig;
+};
+
+export type MutationAddTrackArgs = {
+  input: AddTrackInput;
 };
 
 export type MutationDisableCommandArgs = {
@@ -100,6 +113,14 @@ export type MutationEnableCommandArgs = {
 };
 
 export type MutationHasChikaArgs = {
+  guildId: Scalars['ID'];
+};
+
+export type MutationRemoveTrackArgs = {
+  input: RemoveTrackInput;
+};
+
+export type MutationShuffleTracksArgs = {
   guildId: Scalars['ID'];
 };
 
@@ -120,6 +141,8 @@ export type Query = {
   getAllCommands: Array<Command>;
   getCommandsUnderGuildCtx: Array<CommandGuildCtx>;
   getGuildConfig: GuildConfig;
+  getNowPlaying?: Maybe<Track>;
+  getTracks: Array<Track>;
   getUser: User;
 };
 
@@ -131,9 +154,39 @@ export type QueryGetGuildConfigArgs = {
   guildId: Scalars['ID'];
 };
 
+export type QueryGetNowPlayingArgs = {
+  guildId: Scalars['ID'];
+};
+
+export type QueryGetTracksArgs = {
+  guildId: Scalars['ID'];
+};
+
+export type RemoveTrackInput = {
+  guildId: Scalars['ID'];
+  track: TrackInput;
+};
+
 export type ToggleCommandInput = {
   commandId: Scalars['Int'];
   guildId: Scalars['String'];
+};
+
+export type Track = {
+  __typename?: 'Track';
+  duration: Scalars['String'];
+  id: Scalars['ID'];
+  thumbnailURL: Scalars['String'];
+  title: Scalars['String'];
+  url: Scalars['String'];
+};
+
+export type TrackInput = {
+  duration: Scalars['String'];
+  id: Scalars['ID'];
+  thumbnailURL: Scalars['String'];
+  title: Scalars['String'];
+  url: Scalars['String'];
 };
 
 export type UpdateBalloonInput = {
@@ -181,6 +234,19 @@ export type SimpleCommandFragment = { __typename?: 'CommandGuildCtx' } & Pick<
   CommandGuildCtx,
   'id' | 'commandId' | 'name' | 'description' | 'category' | 'disabled'
 >;
+
+export type TrackInfoFragment = { __typename?: 'Track' } & Pick<
+  Track,
+  'id' | 'title' | 'url' | 'thumbnailURL' | 'duration'
+>;
+
+export type AddTrackMutationVariables = Exact<{
+  input: AddTrackInput;
+}>;
+
+export type AddTrackMutation = { __typename?: 'Mutation' } & {
+  addTrack: { __typename?: 'Track' } & Pick<Track, 'id'>;
+};
 
 export type DisabledCommandMutationVariables = Exact<{
   input: ToggleCommandInput;
@@ -275,6 +341,22 @@ export type MeQuery = { __typename?: 'Query' } & {
     };
 };
 
+export type NowPlayingQueryVariables = Exact<{
+  guildId: Scalars['ID'];
+}>;
+
+export type NowPlayingQuery = { __typename?: 'Query' } & {
+  getNowPlaying?: Maybe<{ __typename?: 'Track' } & TrackInfoFragment>;
+};
+
+export type TracksQueryVariables = Exact<{
+  guildId: Scalars['ID'];
+}>;
+
+export type TracksQuery = { __typename?: 'Query' } & {
+  getTracks: Array<{ __typename?: 'Track' } & TrackInfoFragment>;
+};
+
 export const GuildConfigInfoFragmentDoc = gql`
   fragment GuildConfigInfo on GuildConfig {
     id
@@ -295,6 +377,62 @@ export const SimpleCommandFragmentDoc = gql`
     disabled
   }
 `;
+export const TrackInfoFragmentDoc = gql`
+  fragment TrackInfo on Track {
+    id
+    title
+    url
+    thumbnailURL
+    duration
+  }
+`;
+export const AddTrackDocument = gql`
+  mutation AddTrack($input: AddTrackInput!) {
+    addTrack(input: $input) {
+      id
+    }
+  }
+`;
+export type AddTrackMutationFn = Apollo.MutationFunction<
+  AddTrackMutation,
+  AddTrackMutationVariables
+>;
+
+/**
+ * __useAddTrackMutation__
+ *
+ * To run a mutation, you first call `useAddTrackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddTrackMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addTrackMutation, { data, loading, error }] = useAddTrackMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddTrackMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    AddTrackMutation,
+    AddTrackMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<AddTrackMutation, AddTrackMutationVariables>(
+    AddTrackDocument,
+    options,
+  );
+}
+export type AddTrackMutationHookResult = ReturnType<typeof useAddTrackMutation>;
+export type AddTrackMutationResult = Apollo.MutationResult<AddTrackMutation>;
+export type AddTrackMutationOptions = Apollo.BaseMutationOptions<
+  AddTrackMutation,
+  AddTrackMutationVariables
+>;
 export const DisabledCommandDocument = gql`
   mutation DisabledCommand($input: ToggleCommandInput!) {
     disableCommand(toggleCommandInput: $input) {
@@ -796,3 +934,109 @@ export function useMeLazyQuery(
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const NowPlayingDocument = gql`
+  query NowPlaying($guildId: ID!) {
+    getNowPlaying(guildId: $guildId) {
+      ...TrackInfo
+    }
+  }
+  ${TrackInfoFragmentDoc}
+`;
+
+/**
+ * __useNowPlayingQuery__
+ *
+ * To run a query within a React component, call `useNowPlayingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useNowPlayingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNowPlayingQuery({
+ *   variables: {
+ *      guildId: // value for 'guildId'
+ *   },
+ * });
+ */
+export function useNowPlayingQuery(
+  baseOptions: Apollo.QueryHookOptions<
+    NowPlayingQuery,
+    NowPlayingQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<NowPlayingQuery, NowPlayingQueryVariables>(
+    NowPlayingDocument,
+    options,
+  );
+}
+export function useNowPlayingLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<
+    NowPlayingQuery,
+    NowPlayingQueryVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<NowPlayingQuery, NowPlayingQueryVariables>(
+    NowPlayingDocument,
+    options,
+  );
+}
+export type NowPlayingQueryHookResult = ReturnType<typeof useNowPlayingQuery>;
+export type NowPlayingLazyQueryHookResult = ReturnType<
+  typeof useNowPlayingLazyQuery
+>;
+export type NowPlayingQueryResult = Apollo.QueryResult<
+  NowPlayingQuery,
+  NowPlayingQueryVariables
+>;
+export const TracksDocument = gql`
+  query Tracks($guildId: ID!) {
+    getTracks(guildId: $guildId) {
+      ...TrackInfo
+    }
+  }
+  ${TrackInfoFragmentDoc}
+`;
+
+/**
+ * __useTracksQuery__
+ *
+ * To run a query within a React component, call `useTracksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTracksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTracksQuery({
+ *   variables: {
+ *      guildId: // value for 'guildId'
+ *   },
+ * });
+ */
+export function useTracksQuery(
+  baseOptions: Apollo.QueryHookOptions<TracksQuery, TracksQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useQuery<TracksQuery, TracksQueryVariables>(
+    TracksDocument,
+    options,
+  );
+}
+export function useTracksLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<TracksQuery, TracksQueryVariables>,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useLazyQuery<TracksQuery, TracksQueryVariables>(
+    TracksDocument,
+    options,
+  );
+}
+export type TracksQueryHookResult = ReturnType<typeof useTracksQuery>;
+export type TracksLazyQueryHookResult = ReturnType<typeof useTracksLazyQuery>;
+export type TracksQueryResult = Apollo.QueryResult<
+  TracksQuery,
+  TracksQueryVariables
+>;

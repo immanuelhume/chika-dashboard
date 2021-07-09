@@ -1,4 +1,4 @@
-import create from 'zustand';
+import create, { StateSelector } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { Guild, User } from '../graphql/generated';
 
@@ -49,3 +49,9 @@ export const useStore = create<IStoreFields>(
     ),
   ),
 );
+
+// Selectors for convenience
+export const activeGuildSelector: StateSelector<
+  IStoreFields,
+  Guild | undefined
+> = (state) => state.activeGuild;
