@@ -1,5 +1,6 @@
 import React from 'react';
 import { Guild, useGuildConfigQuery } from '../../graphql/generated';
+import { BalloonSettingsCard } from '../molecules/BalloonSettingsCard';
 import { PrefixSettingsCard } from '../molecules/PrefixSettingsCard';
 import { ShiritoriSettingsCard } from '../molecules/ShiritoriSettingsCard';
 import { LoadingScreen } from './LoadingScreen';
@@ -26,6 +27,7 @@ export const SettingsCards: React.FC<ISettingsCards> = ({ activeGuild }) => {
         prefix={data.getGuildConfig.prefix}
       />
       <ShiritoriSettingsCard config={data.getGuildConfig} />
+      <BalloonSettingsCard config={data.getGuildConfig} />
     </>
   );
 };

@@ -86,8 +86,9 @@ export type Mutation = {
   hasChika: Scalars['Boolean'];
   /** Returns true if logout was successful. */
   logout: Scalars['Boolean'];
-  /** The new prefix */
+  updateBalloon: GuildConfig;
   updatePrefix: GuildConfig;
+  updateShiritori: GuildConfig;
 };
 
 export type MutationDisableCommandArgs = {
@@ -102,8 +103,16 @@ export type MutationHasChikaArgs = {
   guildId: Scalars['ID'];
 };
 
+export type MutationUpdateBalloonArgs = {
+  input: UpdateBalloonInput;
+};
+
 export type MutationUpdatePrefixArgs = {
   input: UpdatePrefixInput;
+};
+
+export type MutationUpdateShiritoriArgs = {
+  input: UpdateShiritoriInput;
 };
 
 export type Query = {
@@ -127,9 +136,27 @@ export type ToggleCommandInput = {
   guildId: Scalars['String'];
 };
 
+export type UpdateBalloonInput = {
+  /** Guild's ID in Discord. */
+  id: Scalars['ID'];
+  /** Maximum volume. */
+  maxVol?: Maybe<Scalars['Int']>;
+  /** Minimum volume. */
+  minVol?: Maybe<Scalars['Int']>;
+};
+
 export type UpdatePrefixInput = {
   id: Scalars['ID'];
   prefix: Scalars['String'];
+};
+
+export type UpdateShiritoriInput = {
+  /** Hand size. */
+  handSize?: Maybe<Scalars['Int']>;
+  /** Guild's ID in Discord. */
+  id: Scalars['ID'];
+  /** Minimum length. */
+  minLen?: Maybe<Scalars['Int']>;
 };
 
 export type User = {
@@ -187,6 +214,14 @@ export type LogoutMutation = { __typename?: 'Mutation' } & Pick<
   'logout'
 >;
 
+export type UpdateBalloonMutationVariables = Exact<{
+  input: UpdateBalloonInput;
+}>;
+
+export type UpdateBalloonMutation = { __typename?: 'Mutation' } & {
+  updateBalloon: { __typename?: 'GuildConfig' } & GuildConfigInfoFragment;
+};
+
 export type UpdatePrefixMutationVariables = Exact<{
   input: UpdatePrefixInput;
 }>;
@@ -196,6 +231,14 @@ export type UpdatePrefixMutation = { __typename?: 'Mutation' } & {
     GuildConfig,
     'id' | 'prefix'
   >;
+};
+
+export type UpdateShiritoriMutationVariables = Exact<{
+  input: UpdateShiritoriInput;
+}>;
+
+export type UpdateShiritoriMutation = { __typename?: 'Mutation' } & {
+  updateShiritori: { __typename?: 'GuildConfig' } & GuildConfigInfoFragment;
 };
 
 export type CommandsQueryVariables = Exact<{
@@ -443,6 +486,57 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<
   LogoutMutation,
   LogoutMutationVariables
 >;
+export const UpdateBalloonDocument = gql`
+  mutation UpdateBalloon($input: UpdateBalloonInput!) {
+    updateBalloon(input: $input) {
+      ...GuildConfigInfo
+    }
+  }
+  ${GuildConfigInfoFragmentDoc}
+`;
+export type UpdateBalloonMutationFn = Apollo.MutationFunction<
+  UpdateBalloonMutation,
+  UpdateBalloonMutationVariables
+>;
+
+/**
+ * __useUpdateBalloonMutation__
+ *
+ * To run a mutation, you first call `useUpdateBalloonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateBalloonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateBalloonMutation, { data, loading, error }] = useUpdateBalloonMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateBalloonMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateBalloonMutation,
+    UpdateBalloonMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateBalloonMutation,
+    UpdateBalloonMutationVariables
+  >(UpdateBalloonDocument, options);
+}
+export type UpdateBalloonMutationHookResult = ReturnType<
+  typeof useUpdateBalloonMutation
+>;
+export type UpdateBalloonMutationResult =
+  Apollo.MutationResult<UpdateBalloonMutation>;
+export type UpdateBalloonMutationOptions = Apollo.BaseMutationOptions<
+  UpdateBalloonMutation,
+  UpdateBalloonMutationVariables
+>;
 export const UpdatePrefixDocument = gql`
   mutation UpdatePrefix($input: UpdatePrefixInput!) {
     updatePrefix(input: $input) {
@@ -493,6 +587,57 @@ export type UpdatePrefixMutationResult =
 export type UpdatePrefixMutationOptions = Apollo.BaseMutationOptions<
   UpdatePrefixMutation,
   UpdatePrefixMutationVariables
+>;
+export const UpdateShiritoriDocument = gql`
+  mutation UpdateShiritori($input: UpdateShiritoriInput!) {
+    updateShiritori(input: $input) {
+      ...GuildConfigInfo
+    }
+  }
+  ${GuildConfigInfoFragmentDoc}
+`;
+export type UpdateShiritoriMutationFn = Apollo.MutationFunction<
+  UpdateShiritoriMutation,
+  UpdateShiritoriMutationVariables
+>;
+
+/**
+ * __useUpdateShiritoriMutation__
+ *
+ * To run a mutation, you first call `useUpdateShiritoriMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateShiritoriMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateShiritoriMutation, { data, loading, error }] = useUpdateShiritoriMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateShiritoriMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    UpdateShiritoriMutation,
+    UpdateShiritoriMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<
+    UpdateShiritoriMutation,
+    UpdateShiritoriMutationVariables
+  >(UpdateShiritoriDocument, options);
+}
+export type UpdateShiritoriMutationHookResult = ReturnType<
+  typeof useUpdateShiritoriMutation
+>;
+export type UpdateShiritoriMutationResult =
+  Apollo.MutationResult<UpdateShiritoriMutation>;
+export type UpdateShiritoriMutationOptions = Apollo.BaseMutationOptions<
+  UpdateShiritoriMutation,
+  UpdateShiritoriMutationVariables
 >;
 export const CommandsDocument = gql`
   query Commands($guildId: String!) {

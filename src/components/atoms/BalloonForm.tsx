@@ -1,79 +1,69 @@
-import TextField from '@material-ui/core/TextField';
+import { TextField } from '@material-ui/core';
 import { Field, FieldProps, Form, FormikProvider, useFormik } from 'formik';
 import { useSnackbar } from 'notistack';
 import React from 'react';
 import * as yup from 'yup';
-import {
-  GuildConfig,
-  useUpdateShiritoriMutation,
-} from '../../graphql/generated';
+import { GuildConfig, useUpdateBalloonMutation } from '../../graphql/generated';
 import { DivGutterBottom } from './DivGutterBottom';
 import { SaveButton } from './SaveButton';
 
-interface IShiritoriForm {
+interface IBalloonForm {
   config: GuildConfig;
 }
 
 const validationSchema = yup.object({
-  handSize: yup
+  minVol: yup
     .number()
-    .min(1, 'Pls dawg just put in a normal number')
-    .max(12, 'The maximum is 12')
+    .min(0, 'Kinda feel like volume should be positive')
     .required("Don't leave me empty!"),
-  minLen: yup
+  maxVol: yup
     .number()
-    .min(1, 'Seems kinda sussy to me')
+    .min(0, 'Idk man, this seems weird')
     .required("Don't leave me empty!"),
 });
 
-export const ShiritoriForm: React.FC<IShiritoriForm> = ({ config }) => {
+export const BalloonForm: React.FC<IBalloonForm> = ({ config }) => {
+  const { id, ballMinVol, ballMaxVol } = config;
   const { enqueueSnackbar } = useSnackbar();
-  const [updateShiritori] = useUpdateShiritoriMutation();
-  const { shiriHandSize, shiriMinLen, id } = config;
+  const [updateBalloon] = useUpdateBalloonMutation();
   const formik = useFormik({
-    initialValues: {
-      handSize: shiriHandSize,
-      minLen: shiriMinLen,
-    },
+    initialValues: { minVol: ballMinVol, maxVol: ballMaxVol },
     validationSchema,
-    onSubmit: async ({ handSize, minLen }, { setSubmitting }) => {
-      if (handSize === shiriHandSize && minLen === shiriMinLen) return;
-      await updateShiritori({ variables: { input: { id, handSize, minLen } } });
-      enqueueSnackbar('Shiritori settings updated', { variant: 'success' });
+    onSubmit: async ({ minVol, maxVol }, { setSubmitting }) => {
+      if (minVol === ballMinVol && maxVol === ballMaxVol) return;
+      await updateBalloon({ variables: { input: { id, minVol, maxVol } } });
+      enqueueSnackbar('Balloon settings updated', { variant: 'success' });
       setSubmitting(false);
     },
   });
-
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off">
-        <Field name="handSize">
+        <Field name="minVol">
           {({ field, meta }: FieldProps) => (
             <DivGutterBottom>
               <TextField
+                {...field}
                 type="number"
-                id="handSize"
-                label="Hand size"
+                id="minVol"
+                label="Minimum volume"
                 variant="filled"
                 error={meta.touched && !!meta.error}
-                helperText={
-                  meta.error || 'How many cards each player starts with'
-                }
-                {...field}
+                helperText={meta.error}
               />
             </DivGutterBottom>
           )}
         </Field>
-        <Field name="minLen">
+        <Field name="maxVol">
           {({ field, meta }: FieldProps) => (
             <TextField
+              {...field}
               type="number"
-              id="minLen"
-              label="Minimum word length"
+              id="maxVol"
+              label="Maximum volume"
               variant="filled"
               error={meta.touched && !!meta.error}
               helperText={meta.error}
-              {...field}
             />
           )}
         </Field>

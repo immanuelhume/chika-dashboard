@@ -45,7 +45,7 @@ export const PrefixForm: React.FC<IPrefixForm> = ({
 
   return (
     <FormikProvider value={formik}>
-      <Form>
+      <Form autoComplete="off">
         <Field name="prefix">
           {({ field, meta }: FieldProps) => (
             <TextField
