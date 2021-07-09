@@ -31,6 +31,7 @@ export const SaveButton: React.FC<ISaveButton> = ({ loading }) => {
       type="submit"
       size="small"
       className={classes.root}
+      disabled={loading}
     >
       <SaveRoundedIcon />
       {loading && (
