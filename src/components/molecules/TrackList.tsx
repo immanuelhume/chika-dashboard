@@ -2,13 +2,11 @@ import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardHeader from '@material-ui/core/CardHeader';
-import IconButton from '@material-ui/core/IconButton';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
 import Typography from '@material-ui/core/Typography';
-import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
 import _ from 'lodash';
 import { useSnackbar } from 'notistack';
 import React, { useEffect } from 'react';
@@ -16,6 +14,7 @@ import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { activeGuildSelector, useStore } from '../../controllers/store';
 import { useTracksLazyQuery } from '../../graphql/generated';
 import { AddTrackForm } from '../atoms/AddTrackForm';
+import { RemoveTrackButton } from '../atoms/RemoveTrackButton';
 import { ShuffleButton } from '../atoms/ShuffleButton';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -65,7 +64,8 @@ export const TrackList: React.FC<ITrackList> = () => {
     index,
     style,
   }) => {
-    const { title, duration } = data.getTracks[index];
+    const track = data.getTracks[index];
+    const { title, duration } = track;
     return (
       <ListItem divider button style={style} className={classes.root}>
         <ListItemText
@@ -83,9 +83,7 @@ export const TrackList: React.FC<ITrackList> = () => {
         />
         <ScopedCssBaseline>
           <ListItemSecondaryAction>
-            <IconButton size="small">
-              <RemoveCircleRoundedIcon />
-            </IconButton>
+            <RemoveTrackButton guildId={activeGuild.id} track={track} />
           </ListItemSecondaryAction>
         </ScopedCssBaseline>
       </ListItem>

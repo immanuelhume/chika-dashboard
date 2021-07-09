@@ -33,7 +33,7 @@ const validationSchema = yup.object({
       /^(https?:\/\/)?((www\.)?youtube\.com|youtu\.?be)\/.+$/,
       'I can only fetch music from YouTube',
     )
-    .required("Please don't leave me blank."),
+    .required("Please don't leave me blank"),
 });
 
 interface IAddTrackForm {

@@ -164,7 +164,7 @@ export type QueryGetTracksArgs = {
 
 export type RemoveTrackInput = {
   guildId: Scalars['ID'];
-  track: TrackInput;
+  trackId: Scalars['String'];
 };
 
 export type ToggleCommandInput = {
@@ -174,14 +174,6 @@ export type ToggleCommandInput = {
 
 export type Track = {
   __typename?: 'Track';
-  duration: Scalars['String'];
-  id: Scalars['ID'];
-  thumbnailURL: Scalars['String'];
-  title: Scalars['String'];
-  url: Scalars['String'];
-};
-
-export type TrackInput = {
   duration: Scalars['String'];
   id: Scalars['ID'];
   thumbnailURL: Scalars['String'];
@@ -280,6 +272,15 @@ export type LogoutMutation = { __typename?: 'Mutation' } & Pick<
   'logout'
 >;
 
+export type RemoveTrackMutationVariables = Exact<{
+  input: RemoveTrackInput;
+}>;
+
+export type RemoveTrackMutation = { __typename?: 'Mutation' } & Pick<
+  Mutation,
+  'removeTrack'
+>;
+
 export type ShuffleTracksMutationVariables = Exact<{
   guildId: Scalars['ID'];
 }>;
@@ -362,7 +363,9 @@ export type TracksQueryVariables = Exact<{
 }>;
 
 export type TracksQuery = { __typename?: 'Query' } & {
-  getTracks: Array<{ __typename?: 'Track' } & TrackInfoFragment>;
+  getTracks: Array<
+    { __typename?: 'Track' } & Pick<Track, 'id' | 'title' | 'duration'>
+  >;
 };
 
 export const GuildConfigInfoFragmentDoc = gql`
@@ -631,6 +634,54 @@ export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<
   LogoutMutation,
   LogoutMutationVariables
+>;
+export const RemoveTrackDocument = gql`
+  mutation RemoveTrack($input: RemoveTrackInput!) {
+    removeTrack(input: $input)
+  }
+`;
+export type RemoveTrackMutationFn = Apollo.MutationFunction<
+  RemoveTrackMutation,
+  RemoveTrackMutationVariables
+>;
+
+/**
+ * __useRemoveTrackMutation__
+ *
+ * To run a mutation, you first call `useRemoveTrackMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useRemoveTrackMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [removeTrackMutation, { data, loading, error }] = useRemoveTrackMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useRemoveTrackMutation(
+  baseOptions?: Apollo.MutationHookOptions<
+    RemoveTrackMutation,
+    RemoveTrackMutationVariables
+  >,
+) {
+  const options = { ...defaultOptions, ...baseOptions };
+  return Apollo.useMutation<RemoveTrackMutation, RemoveTrackMutationVariables>(
+    RemoveTrackDocument,
+    options,
+  );
+}
+export type RemoveTrackMutationHookResult = ReturnType<
+  typeof useRemoveTrackMutation
+>;
+export type RemoveTrackMutationResult =
+  Apollo.MutationResult<RemoveTrackMutation>;
+export type RemoveTrackMutationOptions = Apollo.BaseMutationOptions<
+  RemoveTrackMutation,
+  RemoveTrackMutationVariables
 >;
 export const ShuffleTracksDocument = gql`
   mutation ShuffleTracks($guildId: ID!) {
@@ -1052,10 +1103,11 @@ export type NowPlayingQueryResult = Apollo.QueryResult<
 export const TracksDocument = gql`
   query Tracks($guildId: ID!) {
     getTracks(guildId: $guildId) {
-      ...TrackInfo
+      id
+      title
+      duration
     }
   }
-  ${TrackInfoFragmentDoc}
 `;
 
 /**

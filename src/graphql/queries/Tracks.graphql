@@ -1,5 +1,7 @@
 query Tracks($guildId: ID!) {
   getTracks(guildId: $guildId) {
-    ...TrackInfo
+    id
+    title
+    duration
   }
 }
