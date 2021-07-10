@@ -1,0 +1,7 @@
+fragment TrackInfo on Track {
+  id
+  title
+  url
+  thumbnailURL
+  duration
+}

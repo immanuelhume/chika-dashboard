@@ -1,21 +1,39 @@
 import { useTheme } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
-import React from 'react';
-import { layoutSelector, useStore } from '../../controllers/store';
+import NoSsr from '@material-ui/core/NoSsr';
+import clsx from 'clsx';
+import React, { useCallback } from 'react';
+import { useStore } from '../../controllers/store';
 import { useLayoutStyles } from '../../lib/useLayoutStyles';
+import { ToggleDrawerMiniButton } from '../atoms/ToggleDrawerMiniButton';
+import { GuildMenu } from './GuildMenu';
 
-interface ISideMenu {
-  Contents: React.FC<any>;
-}
+interface ISideMenu {}
 
-export const SideMenu: React.FC<ISideMenu> = ({ Contents }) => {
+export const SideMenu: React.FC<ISideMenu> = ({ children }) => {
   const classes = useLayoutStyles();
   const theme = useTheme();
-  const { mobileOpen, toggleMobileOpen } = useStore(layoutSelector);
+  const { mobileOpen, toggleMobileOpen, isDrawerMinified } = useStore(
+    useCallback(
+      // eslint-disable-next-line no-shadow
+      ({ mobileOpen, toggleMobileOpen, isDrawerMinified }) => ({
+        mobileOpen,
+        toggleMobileOpen,
+        isDrawerMinified,
+      }),
+      [],
+    ),
+  );
 
   return (
-    <nav className={classes.drawer} aria-label="mailbox folders">
+    <nav
+      className={clsx(
+        isDrawerMinified && classes.drawerMini,
+        !isDrawerMinified && classes.drawer,
+      )}
+      aria-label="mailbox folders"
+    >
       {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
       <Hidden smUp implementation="css">
         <Drawer
@@ -30,18 +48,26 @@ export const SideMenu: React.FC<ISideMenu> = ({ Contents }) => {
             keepMounted: true, // Better open performance on mobile.
           }}
         >
-          <Contents />
+          <div className={classes.toolbar} />
+          <GuildMenu isMini={false} />
+          <NoSsr>{children}</NoSsr>
         </Drawer>
       </Hidden>
       <Hidden xsDown implementation="css">
         <Drawer
           classes={{
-            paper: classes.drawerPaper,
+            paper: clsx(
+              isDrawerMinified && classes.drawerPaperMini,
+              !isDrawerMinified && classes.drawerPaper,
+            ),
           }}
           variant="permanent"
           open
         >
-          <Contents />
+          <div className={classes.toolbar} />
+          <GuildMenu isMini={isDrawerMinified} />
+          <NoSsr>{children}</NoSsr>
+          <ToggleDrawerMiniButton />
         </Drawer>
       </Hidden>
     </nav>

@@ -1,0 +1,5 @@
+query GuildConfig($guildId: ID!) {
+  getGuildConfig(guildId: $guildId) {
+    ...GuildConfigInfo
+  }
+}

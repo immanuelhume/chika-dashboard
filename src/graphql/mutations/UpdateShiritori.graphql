@@ -1,0 +1,5 @@
+mutation UpdateShiritori($input: UpdateShiritoriInput!) {
+  updateShiritori(input: $input) {
+    ...GuildConfigInfo
+  }
+}

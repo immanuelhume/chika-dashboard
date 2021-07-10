@@ -1,0 +1,5 @@
+mutation UpdateBalloon($input: UpdateBalloonInput!) {
+  updateBalloon(input: $input) {
+    ...GuildConfigInfo
+  }
+}

@@ -1,0 +1,3 @@
+mutation RemoveTrack($input: RemoveTrackInput!) {
+  removeTrack(input: $input)
+}

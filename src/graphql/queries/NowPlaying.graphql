@@ -1,0 +1,5 @@
+query NowPlaying($guildId: ID!) {
+  getNowPlaying(guildId: $guildId) {
+    ...TrackInfo
+  }
+}
