@@ -6,14 +6,20 @@ import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import React, { useCallback } from 'react';
 import { useStore } from '../../controllers/store';
 import { useLayoutStyles } from '../../lib/useLayoutStyles';
+import { ColorModeToggleButton } from '../atoms/ColorModeToggleButton';
+import { HStack } from '../atoms/HStack';
 import { UserAvatar } from '../atoms/UserAvatar';
 
 interface IAppbar {}
 
 export const Appbar: React.FC<IAppbar> = () => {
   const classes = useLayoutStyles();
-  const toggleMobileOpen = useStore(
-    useCallback((state) => state.toggleMobileOpen, []),
+  const { toggleMobileOpen } = useStore(
+    useCallback(
+      // eslint-disable-next-line no-shadow
+      ({ toggleMobileOpen }) => ({ toggleMobileOpen }),
+      [],
+    ),
   );
 
   return (
@@ -31,7 +37,10 @@ export const Appbar: React.FC<IAppbar> = () => {
         <Typography variant="h6" noWrap className={classes.appBarTitle}>
           chika.ts
         </Typography>
-        <UserAvatar />
+        <HStack spacing="sm">
+          <ColorModeToggleButton />
+          <UserAvatar />
+        </HStack>
       </Toolbar>
     </AppBar>
   );

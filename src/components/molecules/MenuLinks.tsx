@@ -44,8 +44,15 @@ interface IMenuLinks {}
 
 export const MenuLinks: React.FC<IMenuLinks> = () => {
   const router = useRouter();
-  const toggleMobileOpen = useStore(
-    useCallback((state) => state.toggleMobileOpen, []),
+  const { mobileOpen, toggleMobileOpen } = useStore(
+    useCallback(
+      // eslint-disable-next-line no-shadow
+      ({ mobileOpen, toggleMobileOpen }) => ({
+        mobileOpen,
+        toggleMobileOpen,
+      }),
+      [],
+    ),
   );
   return (
     <div>
@@ -56,7 +63,9 @@ export const MenuLinks: React.FC<IMenuLinks> = () => {
             button
             key={primary}
             onClick={() => {
-              toggleMobileOpen();
+              if (mobileOpen) {
+                toggleMobileOpen();
+              }
               router.push(href);
             }}
             selected={router.route === href}

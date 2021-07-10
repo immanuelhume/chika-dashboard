@@ -10,6 +10,10 @@ export interface IStoreFields {
   setGuilds: (guilds: Guild[]) => void;
   unauthorized?: boolean;
 
+  // User preferences
+  prefersDark: boolean;
+  toggleTheme: () => void;
+
   // Active guild
   activeGuild?: Guild;
   setActiveGuild: (guild?: Guild) => void;
@@ -27,12 +31,17 @@ export const useStore = create<IStoreFields>(
     persist(
       (set) => ({
         // User info
-        setUser: (user?: Omit<User, 'guilds'>) => set({ user }),
+        setUser: (user) => set({ user }),
         guilds: [],
-        setGuilds: (guilds: Guild[]) => set({ guilds }),
+        setGuilds: (guilds) => set({ guilds }),
+
+        // User preferences
+        prefersDark: true,
+        toggleTheme: () =>
+          set(({ prefersDark }) => ({ prefersDark: !prefersDark })),
 
         // Active guild
-        setActiveGuild: (guild?: Guild) => set({ activeGuild: guild }),
+        setActiveGuild: (guild) => set({ activeGuild: guild }),
 
         // Layout
         mobileOpen: false,
@@ -44,7 +53,7 @@ export const useStore = create<IStoreFields>(
       }),
       {
         name: 'zustand-store',
-        whitelist: ['user', 'guilds', 'activeGuild'],
+        whitelist: ['user', 'guilds', 'activeGuild', 'prefersDark'],
       },
     ),
   ),
