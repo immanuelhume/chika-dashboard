@@ -14,7 +14,13 @@ const useStyles = makeStyles(() =>
   }),
 );
 
-export const Center: React.FC = ({ children }) => {
+interface ICenter extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const Center: React.FC<ICenter> = ({ children, ...props }) => {
   const classes = useStyles();
-  return <div className={classes.root}>{children}</div>;
+  return (
+    <div className={classes.root} {...props}>
+      {children}
+    </div>
+  );
 };

@@ -1,3 +1,4 @@
+import { createStyles, IconButton, makeStyles, Theme } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -13,7 +14,26 @@ import { useStore } from '../../controllers/store';
 import { Guild } from '../../graphql/generated';
 import { guildIcon } from '../../lib/discord';
 
-export const GuildMenu: React.FC = () => {
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    avatarContainer: {
+      height: 72,
+      display: 'flex',
+      alignItems: 'center',
+    },
+    avatarIcon: {
+      width: theme.spacing(7),
+      height: theme.spacing(7),
+    },
+  }),
+);
+
+interface IGuildMenu {
+  isMini: boolean;
+}
+
+export const GuildMenu: React.FC<IGuildMenu> = ({ isMini }) => {
+  const classes = useStyles();
   const { guilds, activeGuild, setActiveGuild } = useStore(
     useCallback(
       // eslint-disable-next-line no-shadow
@@ -49,20 +69,32 @@ export const GuildMenu: React.FC = () => {
 
   return (
     <>
-      <List>
-        <ListItem button onClick={handleClickItem}>
-          <ListItemAvatar>
+      {isMini ? (
+        <div className={classes.avatarContainer}>
+          <IconButton
+            size="medium"
+            className={classes.avatarIcon}
+            onClick={handleClickItem}
+          >
             <Avatar src={guildIcon(activeGuild?.id, activeGuild?.icon)} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={activeGuild?.name || 'Choose a server'}
-            primaryTypographyProps={{ noWrap: true }}
-          />
-          <ListItemIcon>
-            <SwapVertRoundedIcon />
-          </ListItemIcon>
-        </ListItem>
-      </List>
+          </IconButton>
+        </div>
+      ) : (
+        <List>
+          <ListItem button onClick={handleClickItem}>
+            <ListItemAvatar>
+              <Avatar src={guildIcon(activeGuild?.id, activeGuild?.icon)} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={activeGuild?.name || 'Choose a server'}
+              primaryTypographyProps={{ noWrap: true }}
+            />
+            <ListItemIcon>
+              <SwapVertRoundedIcon />
+            </ListItemIcon>
+          </ListItem>
+        </List>
+      )}
       <Menu
         anchorEl={anchorEl}
         keepMounted

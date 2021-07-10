@@ -41,7 +41,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <ThemeProvider theme={theme}>
-      <SnackbarProvider preventDuplicate>
+      <SnackbarProvider
+        preventDuplicate
+        anchorOrigin={{ horizontal: 'center', vertical: 'bottom' }}
+        autoHideDuration={3000}
+      >
         <ApolloProvider client={client}>
           <CssBaseline />
           <Component {...pageProps} />

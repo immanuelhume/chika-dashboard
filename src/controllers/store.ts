@@ -21,6 +21,8 @@ export interface IStoreFields {
   // Layout
   mobileOpen: boolean;
   toggleMobileOpen: () => void;
+  isDrawerMinified: boolean;
+  toggleDrawerMinified: () => void;
 
   // wow
   clearStore: () => void;
@@ -47,6 +49,11 @@ export const useStore = create<IStoreFields>(
         mobileOpen: false,
         toggleMobileOpen: () =>
           set(({ mobileOpen }) => set({ mobileOpen: !mobileOpen })),
+        isDrawerMinified: true,
+        toggleDrawerMinified: () =>
+          set(({ isDrawerMinified }) => ({
+            isDrawerMinified: !isDrawerMinified,
+          })),
 
         // wow
         clearStore: () => set({}, true),

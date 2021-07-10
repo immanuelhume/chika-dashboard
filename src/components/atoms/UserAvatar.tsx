@@ -1,4 +1,3 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import NoSsr from '@material-ui/core/NoSsr';
@@ -8,17 +7,8 @@ import { useStore } from '../../controllers/store';
 import { avatar } from '../../lib/discord';
 import { AvatarMenu } from '../molecules/AvatarMenu';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    expand: {
-      alignSelf: 'end',
-    },
-  }),
-);
-
 export const UserAvatar: React.FC = () => {
   const user = useStore(useCallback((state) => state.user, []));
-  const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   function handleClick(event: React.MouseEvent<HTMLElement>) {
