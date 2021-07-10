@@ -7,6 +7,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import NoSsr from '@material-ui/core/NoSsr';
 import SwapVertRoundedIcon from '@material-ui/icons/SwapVertRounded';
 import { useSnackbar } from 'notistack';
 import React, { useCallback, useState } from 'react';
@@ -67,6 +68,12 @@ export const GuildMenu: React.FC<IGuildMenu> = ({ isMini }) => {
     );
   }
 
+  const GuildAvatar = () => (
+    <NoSsr>
+      <Avatar src={guildIcon(activeGuild?.id, activeGuild?.icon)} />
+    </NoSsr>
+  );
+
   return (
     <>
       {isMini ? (
@@ -76,14 +83,14 @@ export const GuildMenu: React.FC<IGuildMenu> = ({ isMini }) => {
             className={classes.avatarIcon}
             onClick={handleClickItem}
           >
-            <Avatar src={guildIcon(activeGuild?.id, activeGuild?.icon)} />
+            <GuildAvatar />
           </IconButton>
         </div>
       ) : (
         <List>
           <ListItem button onClick={handleClickItem}>
             <ListItemAvatar>
-              <Avatar src={guildIcon(activeGuild?.id, activeGuild?.icon)} />
+              <GuildAvatar />
             </ListItemAvatar>
             <ListItemText
               primary={activeGuild?.name || 'Choose a server'}
