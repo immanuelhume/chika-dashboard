@@ -73,7 +73,7 @@ export const AddTrackForm: React.FC<IAddTrackForm> = ({ activeGuild }) => {
 
   return (
     <FormikProvider value={formik}>
-      <Form className={classes.root}>
+      <Form className={classes.root} autoComplete="off">
         <Field name="url">
           {({ field, meta }: FieldProps) => (
             <TextField

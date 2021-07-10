@@ -60,7 +60,13 @@ export const useStore = create<IStoreFields>(
       }),
       {
         name: 'zustand-store',
-        whitelist: ['user', 'guilds', 'activeGuild', 'prefersDark'],
+        whitelist: [
+          'user',
+          'guilds',
+          'activeGuild',
+          'prefersDark',
+          'isDrawerMinified',
+        ],
       },
     ),
   ),
