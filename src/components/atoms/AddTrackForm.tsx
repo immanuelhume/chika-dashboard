@@ -1,10 +1,11 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { createStyles, makeStyles } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import PlaylistAddRoundedIcon from '@material-ui/icons/PlaylistAddRounded';
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import { Field, FieldProps, Form, FormikProvider, useFormik } from 'formik';
+import { useSnackbar } from 'notistack';
 import React from 'react';
 import * as yup from 'yup';
 import {
@@ -12,8 +13,9 @@ import {
   TracksDocument,
   useAddTrackMutation,
 } from '../../graphql/generated';
+import { IconButtonSpinner } from './IconButtonSpinner';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       width: '100%',
@@ -46,6 +48,7 @@ interface IYouTubeFormik {
 
 export const AddTrackForm: React.FC<IAddTrackForm> = ({ activeGuild }) => {
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
   const [addTrack] = useAddTrackMutation({
     refetchQueries: [
       { query: TracksDocument, variables: { guildId: activeGuild.id } },
@@ -56,9 +59,13 @@ export const AddTrackForm: React.FC<IAddTrackForm> = ({ activeGuild }) => {
     initialValues: { url: '' },
     validationSchema,
     onSubmit: async ({ url }, { setSubmitting, resetForm }) => {
-      await addTrack({
-        variables: { input: { guildId: activeGuild.id, youtubeUrl: url } },
-      });
+      try {
+        await addTrack({
+          variables: { input: { guildId: activeGuild.id, youtubeUrl: url } },
+        });
+      } catch (e) {
+        enqueueSnackbar("Couldn't find that video", { variant: 'error' });
+      }
       resetForm();
       setSubmitting(false);
     },
@@ -75,7 +82,6 @@ export const AddTrackForm: React.FC<IAddTrackForm> = ({ activeGuild }) => {
               id="youtube-url"
               label="Add a track"
               helperText={meta.error || 'A YouTube link'}
-              // error={!!meta.error && meta.touched}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -86,9 +92,14 @@ export const AddTrackForm: React.FC<IAddTrackForm> = ({ activeGuild }) => {
             />
           )}
         </Field>
-        {/* TODO: loading state */}
-        <IconButton edge="end" size="medium" type="submit">
+        <IconButton
+          edge="end"
+          size="medium"
+          type="submit"
+          disabled={formik.isSubmitting}
+        >
           <PlaylistAddRoundedIcon />
+          <IconButtonSpinner size="medium" loading={formik.isSubmitting} />
         </IconButton>
       </Form>
     </FormikProvider>
