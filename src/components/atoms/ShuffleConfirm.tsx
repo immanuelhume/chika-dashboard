@@ -37,7 +37,7 @@ export const ShuffleConfirm: React.FC<IShuffleConfirm> = ({
   async function handleConfirm() {
     closePopover();
     await shuffle({ variables: { guildId } });
-    enqueueSnackbar('Tracks shuffled!', { variant: 'success' });
+    enqueueSnackbar('Tracks shuffled!', { variant: 'info' });
   }
 
   return (

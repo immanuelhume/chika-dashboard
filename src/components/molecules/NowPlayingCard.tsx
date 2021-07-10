@@ -1,4 +1,4 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import { grey } from '@material-ui/core/colors';
@@ -29,6 +29,14 @@ const useStyles = makeStyles((theme: Theme) =>
       top: '50%',
       transform: 'translate(-50%, -50%)',
     },
+    emoji: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%, -50%)',
+      color: theme.palette.grey.A200,
+      cursor: 'default',
+    },
   }),
 );
 
@@ -58,11 +66,21 @@ export const NowPlayingCard: React.FC<INowPlayingCard> = () => {
   return (
     <CardGutterBottom>
       <CardHeader title="Now Playing" subheader={data.getNowPlaying?.title} />
-      <CardMedia
-        title="Now playing"
-        image={data.getNowPlaying?.thumbnailURL}
-        className={classes.media}
-      />
+      <div className={classes.container}>
+        {!data.getNowPlaying && (
+          <div className={classes.emoji}>
+            <Typography variant="h2" gutterBottom>
+              ᕦ(ò_óˇ)ᕤ
+            </Typography>
+            <Typography variant="h5">...nothing is playing</Typography>
+          </div>
+        )}
+        <CardMedia
+          title="Now playing"
+          image={data.getNowPlaying?.thumbnailURL}
+          className={classes.media}
+        />
+      </div>
     </CardGutterBottom>
   );
 };

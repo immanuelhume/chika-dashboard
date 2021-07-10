@@ -54,7 +54,10 @@ export const GuildMenu: React.FC = () => {
           <ListItemAvatar>
             <Avatar src={guildIcon(activeGuild?.id, activeGuild?.icon)} />
           </ListItemAvatar>
-          <ListItemText primary={activeGuild?.name || 'Choose a server'} />
+          <ListItemText
+            primary={activeGuild?.name || 'Choose a server'}
+            primaryTypographyProps={{ noWrap: true }}
+          />
           <ListItemIcon>
             <SwapVertRoundedIcon />
           </ListItemIcon>

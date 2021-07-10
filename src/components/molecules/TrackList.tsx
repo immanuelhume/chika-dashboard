@@ -9,7 +9,7 @@ import ScopedCssBaseline from '@material-ui/core/ScopedCssBaseline';
 import Typography from '@material-ui/core/Typography';
 import _ from 'lodash';
 import { useSnackbar } from 'notistack';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { FixedSizeList, ListChildComponentProps } from 'react-window';
 import { activeGuildSelector, useStore } from '../../controllers/store';
 import { useTracksLazyQuery } from '../../graphql/generated';
@@ -95,7 +95,9 @@ export const TrackList: React.FC<ITrackList> = () => {
       <CardHeader
         action={<ShuffleButton guildId={activeGuild.id} />}
         title="Queued"
-        subheader={`${data.getTracks.length} tracks`}
+        subheader={`${data.getTracks.length} ${
+          data.getTracks.length === 1 ? 'track' : 'tracks'
+        }`}
       />
       <FixedSizeList
         itemCount={data.getTracks.length}
