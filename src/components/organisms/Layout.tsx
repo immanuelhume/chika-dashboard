@@ -10,10 +10,13 @@ interface ILayout {}
 
 export const Layout: React.FC<ILayout> = ({ children }) => {
   const classes = useLayoutStyles();
-  const { activeGuild } = useStore(
+  const { activeGuild, isDrawerMinified } = useStore(
     useCallback(
       // eslint-disable-next-line no-shadow
-      ({ activeGuild }) => ({ activeGuild }),
+      ({ activeGuild, isDrawerMinified }) => ({
+        activeGuild,
+        isDrawerMinified,
+      }),
       [],
     ),
   );
@@ -21,7 +24,10 @@ export const Layout: React.FC<ILayout> = ({ children }) => {
   return (
     <div className={classes.root}>
       <Appbar />
-      <SideMenu>{activeGuild ? <MenuLinks /> : <NoGuildSideMenu />}</SideMenu>
+      <SideMenu>
+        {activeGuild && <MenuLinks />}
+        {!activeGuild && !isDrawerMinified && <NoGuildSideMenu />}
+      </SideMenu>
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {children}
