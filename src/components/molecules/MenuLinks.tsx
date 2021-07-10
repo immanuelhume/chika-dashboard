@@ -7,8 +7,9 @@ import BubbleChartRoundedIcon from '@material-ui/icons/BubbleChartRounded';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import { useRouter } from 'next/dist/client/router';
-import React from 'react';
+import React, { useCallback } from 'react';
 import QueueMusicRoundedIcon from '@material-ui/icons/QueueMusicRounded';
+import { useStore } from '../../controllers/store';
 
 interface MenuLink {
   primary: string;
@@ -43,6 +44,9 @@ interface IMenuLinks {}
 
 export const MenuLinks: React.FC<IMenuLinks> = () => {
   const router = useRouter();
+  const toggleMobileOpen = useStore(
+    useCallback((state) => state.toggleMobileOpen, []),
+  );
   return (
     <div>
       <Divider />
@@ -51,7 +55,10 @@ export const MenuLinks: React.FC<IMenuLinks> = () => {
           <ListItem
             button
             key={primary}
-            onClick={() => router.push(href)}
+            onClick={() => {
+              toggleMobileOpen();
+              router.push(href);
+            }}
             selected={router.route === href}
           >
             <ListItemIcon>

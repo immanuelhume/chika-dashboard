@@ -1,4 +1,10 @@
-import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
+import {
+  CircularProgress,
+  createStyles,
+  makeStyles,
+  Theme,
+  Typography,
+} from '@material-ui/core';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import { grey } from '@material-ui/core/colors';
@@ -46,7 +52,7 @@ export const NowPlayingCard: React.FC<INowPlayingCard> = () => {
   const classes = useStyles();
   const activeGuild = useStore(activeGuildSelector);
   const [getNowPlaying, { data, loading }] = useNowPlayingLazyQuery({
-    pollInterval: 2000,
+    pollInterval: 3000,
   });
   useEffect(() => {
     if (!activeGuild) return;

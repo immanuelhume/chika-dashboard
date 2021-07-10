@@ -1,14 +1,15 @@
-import { createStyles, makeStyles, Theme } from '@material-ui/core';
+import { createStyles, makeStyles } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import React, { useCallback, useEffect } from 'react';
 import { PageIntroText } from '../components/atoms/PageIntroText';
+import { NoGuildScreen } from '../components/molecules/NoGuildScreen';
 import { GuildBars } from '../components/organisms/GuildBars';
 import { Layout } from '../components/organisms/Layout';
 import { LoadingScreen } from '../components/organisms/LoadingScreen';
 import { useStore } from '../controllers/store';
 import { useMeQuery } from '../graphql/generated';
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
   createStyles({
     root: {
       flexGrow: 1,
@@ -17,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 export default function Home() {
-  const { data, loading, error } = useMeQuery();
+  const { data, loading } = useMeQuery();
   const { setUser, setGuilds } = useStore(
     useCallback(
       // eslint-disable-next-line no-shadow
@@ -41,7 +42,14 @@ export default function Home() {
   if (loading) {
     return <LoadingScreen />;
   }
-  // TODO: handle case when there are no guilds
+
+  if (data?.getUser.guilds.length === 0) {
+    return (
+      <Layout>
+        <NoGuildScreen />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

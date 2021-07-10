@@ -2,12 +2,13 @@ import IconButton from '@material-ui/core/IconButton';
 import RemoveCircleRoundedIcon from '@material-ui/icons/RemoveCircleRounded';
 import _ from 'lodash';
 import { useSnackbar } from 'notistack';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Track,
   TracksDocument,
   useRemoveTrackMutation,
 } from '../../graphql/generated';
+import { IconButtonSpinner } from './IconButtonSpinner';
 
 interface IRemoveTrackButton {
   guildId: string;
@@ -23,8 +24,10 @@ export const RemoveTrackButton: React.FC<IRemoveTrackButton> = ({
     refetchQueries: [{ query: TracksDocument, variables: { guildId } }],
   });
   const { enqueueSnackbar } = useSnackbar();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleClick() {
+    setIsSubmitting(true);
     await removeTrack({
       variables: {
         input: { guildId, trackId },
@@ -36,11 +39,12 @@ export const RemoveTrackButton: React.FC<IRemoveTrackButton> = ({
       </span>,
       { variant: 'warning' },
     );
+    setIsSubmitting(false);
   }
-  // TODO: loading state
   return (
-    <IconButton size="small" onClick={handleClick}>
+    <IconButton size="small" onClick={handleClick} disabled={isSubmitting}>
       <RemoveCircleRoundedIcon />
+      <IconButtonSpinner size="small" loading={isSubmitting} />
     </IconButton>
   );
 };

@@ -3,12 +3,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
-import { useSnackbar } from 'notistack';
 import React from 'react';
-import {
-  TracksDocument,
-  useShuffleTracksMutation,
-} from '../../graphql/generated';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,27 +14,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 interface IShuffleConfirm extends React.ComponentProps<typeof Popover> {
-  guildId: string;
-  closePopover: () => void;
+  handleConfirm: () => void;
 }
 
 export const ShuffleConfirm: React.FC<IShuffleConfirm> = ({
-  guildId,
-  closePopover,
+  handleConfirm,
   ...props
 }) => {
   const classes = useStyles();
-  const { enqueueSnackbar } = useSnackbar();
-  const [shuffle] = useShuffleTracksMutation({
-    refetchQueries: [{ query: TracksDocument, variables: { guildId } }],
-  });
-
-  async function handleConfirm() {
-    closePopover();
-    await shuffle({ variables: { guildId } });
-    enqueueSnackbar('Tracks shuffled!', { variant: 'info' });
-  }
-
   return (
     <Popover {...props}>
       <Box className={classes.container}>
@@ -49,7 +31,7 @@ export const ShuffleConfirm: React.FC<IShuffleConfirm> = ({
         <Button variant="text" color="default" onClick={handleConfirm}>
           Yee
         </Button>
-        <Button variant="text" color="default" onClick={() => closePopover()}>
+        <Button variant="text" color="default" onClick={() => handleConfirm()}>
           Nope
         </Button>
       </Box>
