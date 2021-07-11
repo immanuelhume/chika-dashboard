@@ -168,7 +168,8 @@ export type RemoveTrackInput = {
 };
 
 export type ToggleCommandInput = {
-  commandId: Scalars['Int'];
+  /** Name of the command. It should be unique. */
+  commandName: Scalars['String'];
   guildId: Scalars['String'];
 };
 
