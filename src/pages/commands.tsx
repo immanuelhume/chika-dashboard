@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { useCallback } from 'react';
 import { PageIntroText } from '../components/atoms/PageIntroText';
 import { Commands } from '../components/organisms/Commands';
@@ -7,17 +8,18 @@ import { useStore } from '../controllers/store';
 export default function CommandsP() {
   const activeGuild = useStore(useCallback((state) => state.activeGuild, []));
   return (
-    <>
-      <Layout>
-        {activeGuild ? (
-          <>
-            <PageIntroText>Toggle commands for your server.</PageIntroText>
-            <Commands activeGuild={activeGuild} />
-          </>
-        ) : (
-          <div>no guild</div>
-        )}
-      </Layout>
-    </>
+    <Layout>
+      <Head>
+        <title>Chika|Commands</title>
+      </Head>
+      {activeGuild ? (
+        <>
+          <PageIntroText>Toggle commands for your server.</PageIntroText>
+          <Commands activeGuild={activeGuild} />
+        </>
+      ) : (
+        <div>no guild</div>
+      )}
+    </Layout>
   );
 }

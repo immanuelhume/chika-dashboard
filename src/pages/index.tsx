@@ -1,5 +1,6 @@
 import { createStyles, makeStyles } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
+import Head from 'next/head';
 import React, { useCallback, useEffect } from 'react';
 import { PageIntroText } from '../components/atoms/PageIntroText';
 import { NoGuildScreen } from '../components/molecules/NoGuildScreen';
@@ -46,6 +47,9 @@ export default function Home() {
   if (data?.getUser.guilds.length === 0) {
     return (
       <Layout>
+        <Head>
+          <title>Chika</title>
+        </Head>
         <NoGuildScreen />
       </Layout>
     );
@@ -53,6 +57,9 @@ export default function Home() {
 
   return (
     <Layout>
+      <Head>
+        <title>Chika</title>
+      </Head>
       <Container maxWidth="sm" className={classes.root}>
         <PageIntroText>
           {data?.getUser.username &&

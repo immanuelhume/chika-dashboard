@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import React, { useCallback } from 'react';
 import { PageIntroText } from '../components/atoms/PageIntroText';
 import { Layout } from '../components/organisms/Layout';
@@ -9,6 +10,9 @@ export default function Settings() {
   if (!activeGuild) return null;
   return (
     <Layout>
+      <Head>
+        <title>Chika|Settings</title>
+      </Head>
       <PageIntroText>Various settings for your server.</PageIntroText>
       <SettingsCards activeGuild={activeGuild} />
     </Layout>

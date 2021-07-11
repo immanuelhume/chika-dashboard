@@ -1,4 +1,5 @@
 import Container from '@material-ui/core/Container';
+import Head from 'next/head';
 import React, { useCallback } from 'react';
 import { PageIntroText } from '../components/atoms/PageIntroText';
 import { NowPlayingCard } from '../components/molecules/NowPlayingCard';
@@ -13,6 +14,9 @@ export default function Music() {
   }
   return (
     <Layout>
+      <Head>
+        <title>Chika|Music</title>
+      </Head>
       <Container maxWidth="sm">
         <PageIntroText>Manage them tunes.</PageIntroText>
         <NowPlayingCard />
