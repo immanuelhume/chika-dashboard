@@ -1,11 +1,13 @@
 import { createStyles, makeStyles, Theme, Typography } from '@material-ui/core';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { grey } from '@material-ui/core/colors';
 import React, { useEffect } from 'react';
 import { activeGuildSelector, useStore } from '../../controllers/store';
 import { useNowPlayingLazyQuery } from '../../graphql/generated';
 import { CardGutterBottom } from '../atoms/CardGutterBottom';
+import { Center } from '../atoms/Center';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -57,8 +59,11 @@ export const NowPlayingCard: React.FC<INowPlayingCard> = () => {
     return null;
   }
   if (loading) {
-    // TODO: loading component
-    return null;
+    return (
+      <Center>
+        <CircularProgress />
+      </Center>
+    );
   }
   if (!data) {
     return null;

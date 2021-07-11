@@ -53,11 +53,7 @@ type ICommandToggle = Pick<
   'commandId' | 'disabled' | 'name'
 >;
 
-export const CommandToggle: React.FC<ICommandToggle> = ({
-  disabled,
-  commandId,
-  name,
-}) => {
+export const CommandToggle: React.FC<ICommandToggle> = ({ disabled, name }) => {
   const activeGuild = useStore(useCallback((state) => state.activeGuild, []));
   const [disable] = useDisabledCommandMutation();
   const [enable] = useEnableCommandMutation();
@@ -66,7 +62,7 @@ export const CommandToggle: React.FC<ICommandToggle> = ({
 
   if (!activeGuild) return null;
   const variables: { input: ToggleCommandInput } = {
-    input: { commandId, guildId: activeGuild.id },
+    input: { commandName: name, guildId: activeGuild.id },
   };
 
   const handleToggle: React.ComponentProps<typeof Switch>['onChange'] = async (
