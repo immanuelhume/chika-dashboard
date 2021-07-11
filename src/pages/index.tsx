@@ -55,7 +55,8 @@ export default function Home() {
     <Layout>
       <Container maxWidth="sm" className={classes.root}>
         <PageIntroText>
-          {`👋 ${data?.getUser.username}, which server are we checking out today?`}
+          {data?.getUser.username &&
+            `👋 ${data?.getUser.username}, which server are we checking out today?`}
         </PageIntroText>
         <GuildBars />
       </Container>
