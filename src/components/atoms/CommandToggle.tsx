@@ -1,7 +1,7 @@
 import { makeStyles, Theme } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
 import { useSnackbar } from 'notistack';
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useStore } from '../../controllers/store';
 import {
   SimpleCommandFragment,
@@ -55,6 +55,7 @@ type ICommandToggle = Pick<
 
 export const CommandToggle: React.FC<ICommandToggle> = ({ disabled, name }) => {
   const activeGuild = useStore(useCallback((state) => state.activeGuild, []));
+  const [isDisabled, setIsDisabled] = useState(disabled);
   const [disable] = useDisabledCommandMutation();
   const [enable] = useEnableCommandMutation();
   const classes = useStyles();
@@ -69,6 +70,7 @@ export const CommandToggle: React.FC<ICommandToggle> = ({ disabled, name }) => {
     _,
     checked,
   ) => {
+    setIsDisabled(!isDisabled);
     const _disabled = !checked;
     if (_disabled) {
       await disable({ variables });
@@ -91,7 +93,7 @@ export const CommandToggle: React.FC<ICommandToggle> = ({ disabled, name }) => {
 
   return (
     <Switch
-      checked={!disabled}
+      checked={!isDisabled}
       onChange={handleToggle}
       classes={{
         root: classes.root,
